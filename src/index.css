@@ -1,0 +1,137 @@
+@import "tailwindcss";
+@plugin "daisyui";
+@plugin "daisyui" {
+  themes: light --default, dark --prefersdark, cupcake;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+* {
+  transition-property: all;
+  transition-timing-function: var(
+    --tw-ease,
+    var(--default-transition-timing-function)
+  );
+  transition-duration: var(--tw-duration, var(--default-transition-duration));
+  --tw-duration: 200ms;
+  transition-duration: 200ms;
+}
+
+/* Animation keyframes */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Hero entrance animations (run once on load) */
+.animate-hero-line {
+  animation: fadeInUp 0.7s ease-out forwards;
+  opacity: 0;
+}
+.animate-hero-line-1 { animation-delay: 0.1s; }
+.animate-hero-line-2 { animation-delay: 0.25s; }
+.animate-hero-line-3 { animation-delay: 0.4s; }
+.animate-hero-line-4 { animation-delay: 0.55s; }
+.animate-hero-line-5 { animation-delay: 0.7s; }
+.animate-hero-line-6 { animation-delay: 0.85s; }
+.animate-hero-line-7 { animation-delay: 1s; }
+.animate-hero-line-8 { animation-delay: 1.15s; }
+.animate-hero-img {
+  animation: fadeIn 0.9s ease-out 0.3s forwards;
+  opacity: 0;
+}
+
+/* Section CTA buttons – hover lift and transition */
+.btn-section {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.btn-section:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+.btn-section:active {
+  transform: translateY(0);
+}
+
+/* Mobile menu panel slide-in */
+@keyframes menuSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-menu-in {
+  animation: menuSlideIn 0.25s ease-out forwards;
+}
+
+@theme {
+  --breakpoint-xxs: 21.25rem; /* 340px */
+  --breakpoint-xs: 23.125rem; /* 363px */
+  --breakpoint-xxl: 82.5rem; /* 1320px */
+  --color-picto-primary: #9929fb;
+  --color-picto-primary-dark: #650fa0;
+  --color-soft-white: #f0f1f3;
+  --color-soft-dark: #87909d;
+}
+
+.btn-primary {
+  @apply bg-picto-primary border-0 text-white hover:scale-[102%] hover:bg-picto-primary-dark transition-all duration-500;
+}
+body {
+  font-family: "Work Sans", sans-serif;
+}
+
+.content {
+  @apply max-xxl:w-full xxl:max-w-[1320px] xxl:mx-auto;
+}
+
+.section-title {
+  @apply md:font-semibold text-3xl sm:text-4xl md:text-5xl font-medium;
+}
+
+.center {
+  @apply flex justify-center items-center;
+}
+
+.introduction-profile-background {
+  background: radial-gradient(
+      circle at 12% 100%,
+      #ffe2b0f5 1% 5px,
+      transparent 15%
+    ),
+    radial-gradient(circle at 95% -15%, #da4df166 5%, transparent 30%),
+    radial-gradient(circle at center right, #c4f5e9b2 2%, transparent 35%);
+}
