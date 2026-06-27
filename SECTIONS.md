@@ -1,13 +1,31 @@
-# Portfolio – Picto base
+# Emmanuel Okpiaifo – Portfolio
 
-The site is now **Picto** (from `ref/picto-1.0.0`) imported as the main app. You can customize and improve it from here.
+Single-page React portfolio built with Vite, Tailwind CSS 4, daisyUI, and React Router.
 
-**Included:**
-- Full Picto layout: NavBar, Footer, ScrollToTop, Main
-- Home page: Introduction, Profile, Work Process, Portfolio, Work Together, Blog, Profession, Happy Clients, Testimonial, Contact
-- Tailwind 4 + daisyUI, React Router, react-scroll, FontAwesome, Swiper, etc.
-- All ref assets under `src/assets/`
+## Home page sections
 
-**Next:** Customize content (name, copy, images), tweak styles, and add your own sections or pages.
+1. **Introduction** – Hero with name, tagline, stats, and profile image
+2. **Profile** – About, social links, CV download, project CTA
+3. **Work Process** – How projects are delivered
+4. **Portfolio** – Key impact projects with live links
+5. **Work Together** – Collaboration CTA
+6. **Services** – What I do (web platforms, CMS, communications)
+7. **Testimonial** – Client feedback carousel
+8. **Contact** – Address, social links, contact form
 
-**Run:** `npm run dev`
+## Content
+
+Edit `src/data/profile.js` to update copy, stats, projects, and contact details across the site.
+
+## Commands
+
+- `npm run dev` – local development server
+- `npm run build` – production build to `dist/`
+- `npm run preview` – preview the production build
+- `npm run deploy` – build and publish to GitHub Pages (requires `gh-pages`)
+
+## Assets
+
+- Profile photo: `src/assets/Emmanuel.jpg`
+- Logos: `src/assets/Logos/`
+- CV: `src/assets/Emmanuel-Okpiaifo-FlowCV-Resume-20260212.pdf` and `public/Emmanuel-Okpiaifo-Resume.pdf`

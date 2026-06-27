@@ -15,29 +15,49 @@ const telegramSVG = (
 const commonClass =
   "input input-lg border-0 border-b-2 focus:outline-none focus:placeholder:text-picto-primary placeholder:text-[15px] md:placeholder:text-lg focus:border-picto-primary border-[#E6E8EB] w-full rounded-none px-0";
 
+import { profile } from "../../data/profile";
+
 const Form = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const data = new FormData(form);
+    const subject = data.get("subject");
+    const body = [
+      `Name: ${data.get("name")}`,
+      `Email: ${data.get("email")}`,
+      `Location: ${data.get("location")}`,
+      "",
+      data.get("message"),
+    ].join("\n");
+
+    window.location.href = `mailto:${profile.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  };
+
   return (
     <div>
       <p className="text-[12px] xs:text-[14px] max-lg:text-center sm:text-lg font-normal text-soft-dark">
-        I'm always open to discussing product design work or partnership
-        opportunities.
+        {profile.contact.subtitle}
       </p>
       <div className="mx-2">
-        <form className="flex flex-col gap-4 mt-4">
+        <form className="flex flex-col gap-4 mt-4" onSubmit={handleSubmit}>
           <input
             type="text"
+            name="name"
             placeholder="Name*"
             className={`${commonClass}`}
             required
           />
           <input
             type="email"
+            name="email"
             placeholder="Email*"
             className={`${commonClass}`}
             required
           />
           <input
             type="text"
+            name="location"
             placeholder="Location*"
             className={`${commonClass}`}
             required
@@ -45,15 +65,17 @@ const Form = () => {
 
           <input
             type="text"
+            name="subject"
             placeholder="Subject*"
             className={`${commonClass}`}
             required
           />
 
-          <input
-            type="text"
+          <textarea
+            name="message"
             placeholder="Message*"
-            className={`${commonClass}`}
+            rows={4}
+            className={`${commonClass} resize-none`}
             required
           />
           <button
