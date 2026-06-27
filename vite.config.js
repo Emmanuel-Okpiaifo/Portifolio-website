@@ -5,7 +5,11 @@ import tailwindcss from "@tailwindcss/vite";
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
-  const base = env.VITE_REPO_NAME ? `/${env.VITE_REPO_NAME}/` : "/";
+  // Subpath base is only for GitHub Pages (see .env.gh-pages). Netlify uses "/".
+  const base =
+    env.VITE_GH_PAGES === "true" && env.VITE_REPO_NAME
+      ? `/${env.VITE_REPO_NAME}/`
+      : "/";
   return {
     base,
     plugins: [react(), tailwindcss()],
