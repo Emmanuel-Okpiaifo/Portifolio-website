@@ -1,72 +1,51 @@
 import { Link } from "react-scroll";
-import profileImage from "../../assets/Emmanuel.jpg";
-import resumePdf from "../../assets/Emmanuel-Okpiaifo-FlowCV-Resume-20260212.pdf";
+import resumePdf from "../../assets/Emmanuel_Okpiaifo-Resume.pdf";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDownload } from "@fortawesome/free-solid-svg-icons";
 import SocialMedia from "../common/socialMedia/SocialMedia";
+import AnimateOnScroll from "../common/animate/AnimateOnScroll";
 import { profile } from "../../data/profile";
 
 const Profile = () => {
   const { about } = profile;
-  return (
-    <div
-      className={`relative mx-4 xxl:mx-0.5 -bottom-20 lg:-bottom-28 z-10 rounded-2xl bg-white drop-shadow-2xl max-xl:mb-5 shadow-white xl:p-28 lg:p-20 md:p-16 sm:p-10 p-4`}
-      id="profile"
-    >
-      <div className="flex max-md:flex-col justify-between items-center gap-6">
-        <div className="xxl:max-w-106 w-auto h-auto xxl:max-h-126">
-          <div className="max-w-106 h-117 object-fill overflow-hidden rounded-xl">
-            <img
-              className="bg-soft-white h-[120%] object-cover"
-              src={profileImage}
-              alt={profile.name}
-            />
-          </div>
-          <div className="relative bottom-9">
-            <div className="flex justify-center">
-              <div className="px-6 max-w-66 py-3 z-50 text-center bg-white rounded-[4px] center shadow-2xl drop-shadow-2xl shadow-white">
-                <SocialMedia />
-              </div>
-            </div>
-          </div>
-        </div>
 
-        <div className="max-sm:w-full w-[33rem]">
-          <h2
-            className={`text-2xl xxs:text-3xl sm:text-4xl lg:text-[38px] text-[min(24px,38px)] max-md:text-center font-semibold mb-8`}
-          >
-            {about.headline}
-          </h2>
-          <div
-            className={`text-xs xs:text-[16px] lg:text-lg font-normal max-md:text-center text-gray-600`}
-          >
-            {about.paragraphs.map((p, i) => (
-              <p key={i} className={i > 0 ? "mt-3" : ""}>
-                {p}
-              </p>
-            ))}
-          </div>
-          <div className="mt-8 flex max-md:justify-center gap-3 flex-wrap">
-            <Link
-              to="portfolio"
-              smooth
-              duration={800}
-              className="btn xxs:btn-lg px-6 max-xs:px-2 xxs:py-3 btn-primary text-xs xxs:text-[14px] sm:text-[16px] btn-section"
-            >
-              My Projects
-            </Link>
-            <a
-              className={`btn xxs:btn-lg px-6 max-xs:px-2 xxs:py-3 hover:border-picto-primary bg-white duration-300 transition-all hover:text-picto-primary text-xs xxs:text-[14px] sm:text-[16px] btn-section`}
-              href={resumePdf}
-              target="_blank"
-              rel="noopener noreferrer"
-              download
-            >
-              <FontAwesomeIcon icon={faDownload} /> Download CV
-            </a>
-          </div>
+  return (
+    <div className="profile-card px-4 sm:px-6 md:px-10 lg:px-16 py-8 sm:py-10 lg:py-14 mb-6 sm:mb-8" id="profile">
+      <AnimateOnScroll animation="scale-in" className="max-w-3xl mx-auto text-center">
+        <p className="section-eyebrow">About</p>
+        <h2 className="font-display text-3xl sm:text-4xl font-semibold text-edo-charcoal mb-6">
+          {about.headline}
+        </h2>
+        <div className="space-y-4 text-stone-600 text-base sm:text-lg leading-relaxed">
+          {about.paragraphs.map((p, i) => (
+            <AnimateOnScroll key={i} animation="fade-up" delay={i * 80} as="p">
+              {p}
+            </AnimateOnScroll>
+          ))}
         </div>
-      </div>
+        <AnimateOnScroll animation="fade-up" delay={280} className="mt-8 flex flex-col sm:flex-row flex-wrap justify-center gap-3 w-full min-w-0 px-1 sm:px-0">
+          <Link
+            to="portfolio"
+            smooth
+            duration={800}
+            className="btn btn-primary btn-touch px-6 py-3 btn-section w-full sm:w-auto"
+          >
+            View Projects
+          </Link>
+          <a
+            className="btn bg-white border border-stone-300 hover:border-edo-gold hover:text-edo-gold btn-touch px-6 py-3 btn-section w-full sm:w-auto"
+            href={resumePdf}
+            target="_blank"
+            rel="noopener noreferrer"
+            download
+          >
+            <FontAwesomeIcon icon={faDownload} /> Download CV
+          </a>
+        </AnimateOnScroll>
+        <AnimateOnScroll animation="fade-up" delay={280} className="mt-8 flex justify-center">
+          <SocialMedia />
+        </AnimateOnScroll>
+      </AnimateOnScroll>
     </div>
   );
 };

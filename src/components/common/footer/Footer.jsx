@@ -1,48 +1,54 @@
 import { profile } from "../../../data/profile";
 import Logo from "../logo/Logo";
+import SocialMedia from "../socialMedia/SocialMedia";
 
 const navItems = [
   { id: 1, name: "Home", url: "introduction" },
   { id: 2, name: "About", url: "profile" },
-  { id: 3, name: "Process", url: "work-process" },
+  { id: 3, name: "Experience", url: "experience" },
   { id: 4, name: "Portfolio", url: "portfolio" },
-  { id: 5, name: "Services", url: "services" },
-  { id: 6, name: "Contact", url: "contact" },
+  { id: 5, name: "Contact", url: "contact" },
 ];
-const copyrightYear = new Date().getFullYear();
 
 const Footer = () => {
+  const year = new Date().getFullYear();
+
   return (
-    <div className="bg-[#2A374A]">
-      <div className="pt-25 md:pt-40 content max-2xl:px-3">
-        <div className="flex max-md:flex-col justify-between mx-0 items-center h-full w-full text-neutral-200">
-          <a href="#introduction" className="flex items-center gap-3 border-0">
-            <Logo variant="grayscaleTransparent" className="h-12 w-auto max-h-14 sm:h-14 sm:max-h-16 object-contain shrink-0 opacity-90" />
-            <span className="text-2xl sm:text-[28px] font-semibold text-white">
-              {profile.shortName}
+    <footer className="bg-edo-charcoal text-edo-cream">
+      <div className="content px-4 sm:px-6 pt-16 pb-10">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-6 sm:gap-8 text-center md:text-left">
+          <a href="#introduction" className="flex items-center gap-3 sm:gap-3.5 max-w-full">
+            <Logo badge className="h-12 w-12 sm:h-14 sm:w-14 md:h-16 md:w-16 shrink-0" />
+            <span className="flex flex-col leading-tight text-left min-w-0">
+              <span className="font-display text-base sm:text-lg md:text-xl font-bold text-edo-gold tracking-wide">
+                {profile.brand.monogram}
+              </span>
+              <span className="text-edo-cream/70 text-[0.65rem] xs:text-xs sm:text-sm font-medium line-clamp-2 sm:line-clamp-none">
+                {profile.brand.title}
+              </span>
             </span>
           </a>
-          <div className="mx-7 max-md:my-7 text-center">
+
+          <nav className="flex flex-wrap justify-center gap-x-5 gap-y-2">
             {navItems.map((item) => (
               <a
                 key={item.id}
-                className="mx-2 group inline-block relative w-fit text-[12px] sm:text-[16px]"
                 href={`#${item.url}`}
+                className="text-sm text-edo-cream/70 hover:text-edo-gold transition-colors"
               >
                 {item.name}
-                <span className="absolute left-0 bottom-0 h-0.5 w-full bg-white scale-x-0 duration-300 group-hover:scale-x-100"></span>
               </a>
             ))}
-          </div>
-          <p className="text-[12px] sm:text-[16px]">
-            Copyright &copy; {copyrightYear} {profile.name}.
-          </p>
+          </nav>
+
+          <SocialMedia variant="dark" />
         </div>
-        <p className="text-white text-center max-xs:text-[12px] max-md:text-[14px] w-full py-10">
-          {profile.footer.credit}
+
+        <p className="text-center text-edo-cream/50 text-sm mt-12">
+          &copy; {year} {profile.name}. {profile.footer.credit}
         </p>
       </div>
-    </div>
+    </footer>
   );
 };
 

@@ -1,30 +1,49 @@
+import edoLogo from "../../../assets/Logos/edo-logo.png";
+import { profile } from "../../../data/profile";
+
 /**
- * Emmanuel Okpiaifo logo – uses assets from logos folder.
- * variant: "default" (full color) | "transparent" | "grayscale" | "grayscaleTransparent"
+ * Transparent crest — optional sage badge keeps it identical on every background.
+ * badge: fixed tile + gold ring (navbar, hero, footer)
+ * glow: subtle pulse so the mark draws the eye without changing on scroll
  */
-import logoFull from "../../../assets/Logos/emmanuel-okpiaifo-high-resolution-logo.png";
-import logoTransparent from "../../../assets/Logos/emmanuel-okpiaifo-high-resolution-logo-transparent.png";
-import logoGrayscale from "../../../assets/Logos/emmanuel-okpiaifo-high-resolution-logo-grayscale.png";
-import logoGrayscaleTransparent from "../../../assets/Logos/emmanuel-okpiaifo-high-resolution-logo-grayscale-transparent.png";
+const Logo = ({
+  variant = "onLight",
+  badge = false,
+  glow = false,
+  className = "h-12 w-12 sm:h-14 sm:w-14",
+  alt = profile.brand?.displayName ?? "EDO — The Emmanuel Daniel Okpiaifo",
+  ...props
+}) => {
+  const imgClass = badge
+    ? "h-[88%] w-[88%] object-contain"
+    : `object-contain shrink-0 ${
+        variant === "onDark" ? "brightness-0 invert opacity-95" : ""
+      } ${className}`;
 
-const variants = {
-  default: logoFull,
-  transparent: logoTransparent,
-  grayscale: logoGrayscale,
-  grayscaleTransparent: logoGrayscaleTransparent,
-};
-
-const Logo = ({ variant = "default", className = "h-8 w-8 sm:h-10 sm:w-10", alt = "Emmanuel Okpiaifo", ...props }) => {
-  const src = variants[variant] ?? variants.default;
-  return (
+  const img = (
     <img
-      src={src}
+      src={edoLogo}
       alt={alt}
-      className={className}
+      className={imgClass}
       loading="eager"
       {...props}
     />
   );
+
+  if (badge) {
+    return (
+      <span
+        className={`logo-badge inline-flex shrink-0 items-center justify-center ${
+          glow ? "logo-badge-glow" : ""
+        } ${className}`}
+        aria-hidden={alt ? undefined : true}
+      >
+        {img}
+      </span>
+    );
+  }
+
+  return img;
 };
 
 export default Logo;

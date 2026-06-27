@@ -1,14 +1,24 @@
-const InformationSummary = ({ item }) => {
+const InformationSummary = ({ item, dark = false }) => {
   return (
-    <div className={`bg-[#F6EBFE] text-center`}>
-      <div className="w-auto h-auto mx-2 sm:mx-4 my-5 xxs:my-5 sm:my-[17px]">
+    <div
+      className={`rounded-xl text-center border ${
+        dark
+          ? "bg-white/5 border-edo-gold/20 backdrop-blur-sm"
+          : "bg-edo-stone border-stone-200"
+      }`}
+    >
+      <div className="px-1.5 py-3 xs:px-2 xs:py-4 sm:py-5">
         <p
-          className={`text-[16px] xxs:text-[18px] sm:text-[32px] font-semibold text-gray-700`}
+          className={`text-lg xs:text-xl sm:text-2xl font-semibold leading-none ${
+            dark ? "text-edo-gold" : "text-edo-charcoal"
+          }`}
         >
           {item.description}
         </p>
         <p
-          className={`text-[8px] xxs:text-[9px] sm:text-[16px] font-normal px-[0.90rem] sm:px-[1rem] text-wrap text-gray-500`}
+          className={`text-[9px] xs:text-[10px] sm:text-xs font-medium uppercase tracking-wide xs:tracking-wider mt-1.5 leading-tight ${
+            dark ? "text-edo-cream/60" : "text-stone-500"
+          }`}
         >
           {item.title}
         </p>

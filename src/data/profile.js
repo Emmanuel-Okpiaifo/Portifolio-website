@@ -4,12 +4,19 @@
  */
 
 export const profile = {
-  name: "Emmanuel Okpiaifo",
-  shortName: "Emmanuel Okpiaifo",
-  tagline: "Technology & Media Operations Specialist | Web Platform Developer | Communications Associate",
+  name: "Emmanuel Daniel Okpiaifo",
+  shortName: "EDO",
+  brand: {
+    monogram: "EDO",
+    title: "The Emmanuel Daniel Okpiaifo",
+    displayName: "The Emmanuel Daniel Okpiaifo, EDO",
+  },
+  tagline: "Frontend Developer (React & WordPress) | Web Platform & Digital Product Builder",
   email: "emmaokpiaifo@gmail.com",
   phone: "09160852509",
   phoneDisplay: "(+234) 9160852509",
+  phoneTel: "+2349160852509",
+  whatsappUrl: "https://wa.me/2349160852509",
   location: "Lagos, Nigeria",
   address: "9, Joy Egbe Close, Gateway Estate, Magodo, Lagos",
 
@@ -17,28 +24,27 @@ export const profile = {
 
   intro: {
     greeting: "Hello, I'm",
-    headline: "Emmanuel Okpiaifo",
-    bio: "I'm a Technology & Media Operations Specialist and Web Platform Developer based in Lagos. I build scalable web platforms, React applications, LMS platforms, and support digital education initiatives with partners like Google DeepMind, Meta, and Mastercard Foundation.",
-    bioHighlightTerms: ["Technology & Media Operations Specialist", "Web Platform Developer"],
+    headline: "Emmanuel Daniel Okpiaifo",
+    bio: "I'm a Frontend Developer based in Lagos, building production React applications and managing enterprise WordPress ecosystems for organizations partnered with Google DeepMind, Meta, Raspberry Pi Foundation, GIZ, UNDP, and LSETF.",
+    bioHighlightTerms: ["Frontend Developer", "React applications"],
     ctaEmail: "emmaokpiaifo@gmail.com",
   },
 
   stats: [
-    { id: 1, title: "Experience", description: "3+ Y." },
+    { id: 1, title: "Experience", description: "2+ Y." },
     { id: 2, title: "Key Projects", description: "10+" },
     { id: 3, title: "Partner Orgs", description: "8+" },
   ],
 
   about: {
-    headline: "Technology, Design & Media Associate",
+    headline: "Technology Associate at NerdzFactory Company",
     paragraphs: [
-      "Technology, Design & Media Associate with experience building scalable web platforms, managing multi-site WordPress ecosystems, and supporting high-impact digital education and business initiatives. Proven track record delivering React applications, LMS platforms, campaign landing pages, and cross-functional media support for programs in partnership with organizations including Google DeepMind, Raspberry Pi Foundation, Meta, LSETF, GIZ, UNDP, and Mastercard Foundation.",
-      "Skilled in digital platform management, technical support, performance optimization, and operational workflow structuring.",
+      "Frontend Developer with 2+ years building production React applications and managing enterprise WordPress ecosystems for organizations partnered with Google DeepMind, Raspberry Pi Foundation, Meta, LSETF, GIZ, UNDP, and Mastercard Foundation.",
+      "I've shipped a full SME growth platform end-to-end — React frontend, CMS, Flutterwave payments, and AI chatbot — currently supporting 20+ daily content uploads and 98%+ platform uptime, alongside an LMS, multiple campaign platforms, and workflow automations. Comfortable owning a build from architecture through deployment and post-launch optimization.",
     ],
   },
 
   social: [
-    { name: "Linktree", url: "https://linktr.ee/emmanuelokpiaifo", icon: "link" },
     { name: "GitHub", url: "https://github.com/Emmanuel-Okpiaifo", icon: "github" },
     { name: "LinkedIn", url: "https://www.linkedin.com/in/emmanuel-okpiaifo", icon: "linkedin" },
   ],
@@ -48,80 +54,200 @@ export const profile = {
     subtitle: "I'm available for freelance work and collaboration. Drop me a line if you have a project or partnership you think I'd be a good fit for.",
     address: [
       { title: "Address", description: "9, Joy Egbe Close, Gateway Estate, Magodo, Lagos" },
-      { title: "My Email", description: "emmaokpiaifo@gmail.com" },
-      { title: "Call Me Now", description: "09160852509" },
+      { title: "My Email", description: "emmaokpiaifo@gmail.com", href: "mailto:emmaokpiaifo@gmail.com" },
+      {
+        title: "Call / WhatsApp",
+        description: "(+234) 9160852509",
+        href: "tel:+2349160852509",
+        whatsapp: true,
+      },
     ],
   },
 
   profession: {
     title: "What I do?",
-    intro: "I specialize in building scalable web platforms, managing WordPress ecosystems, and delivering React applications, LMS platforms, and campaign landing pages for digital education and business initiatives.",
-    intro2: "I work with partners like Google DeepMind, Raspberry Pi Foundation, Meta, LSETF, GIZ, UNDP, and Mastercard Foundation—combining technical delivery with communications and media support.",
+    intro: "I specialize in building production React platforms, managing WordPress ecosystems, and delivering CMS, payment, and AI-integrated solutions for digital education and business initiatives.",
+    intro2: "I work with partners like Google DeepMind, Raspberry Pi Foundation, Meta, LSETF, GIZ, UNDP, and Mastercard Foundation—combining technical delivery with performance, SEO, and platform reliability.",
     ctaEmail: "emmaokpiaifo@gmail.com",
     roles: [
       {
         id: 1,
         title: "Web Platform Development",
-        description: "I design, build, and deploy production-ready web platforms with React and WordPress—including custom CMS, responsive layouts, and performance optimization for SMEs and program initiatives.",
+        description: "I design, build, and deploy production React platforms — CMS, payment gateways (Flutterwave), AI chatbot integrations, and analytics — for SMEs and program initiatives.",
       },
       {
         id: 2,
         title: "Digital Platform & CMS Management",
-        description: "I manage multi-site WordPress (Elementor) ecosystems, LMS platforms, and content rollouts—ensuring uptime, security updates, brand consistency, and UX improvements.",
+        description: "I manage multi-site WordPress (Elementor) ecosystems and LMS platforms — maintaining 98%+ uptime, security updates, SEO, and brand consistency across corporate properties.",
       },
       {
         id: 3,
-        title: "Communications & Media Support",
-        description: "I support digital campaigns, event pages, testimonials, and cross-functional media for flagship programs—structuring content for clarity, mobile responsiveness, and engagement.",
+        title: "Automation & Integrations",
+        description: "I build workflow automations with Google Sheets and Supabase, and provide technical support across internal systems — acknowledging issues within 1 hour and resolving 80%+ within 24 hours.",
       },
+    ],
+  },
+
+  skills: {
+    sectionTitle: "Technical Skills",
+    sectionSubtitle: "Tools and technologies I use to design, build, and ship production web platforms.",
+    categories: [
+      {
+        id: 1,
+        title: "Languages & Frameworks",
+        items: ["JavaScript (ES6+)", "React.js", "HTML5", "CSS3", "Bootstrap", "jQuery"],
+      },
+      {
+        id: 2,
+        title: "Backend & Integrations",
+        items: ["Supabase", "Flutterwave API", "REST APIs", "Google Apps Script", "Zoho Webhooks"],
+      },
+      {
+        id: 3,
+        title: "CMS & Platforms",
+        items: ["WordPress (Elementor)", "Custom CMS Development", "LMS Deployment", "PWA Fundamentals"],
+      },
+      {
+        id: 4,
+        title: "Tools",
+        items: ["Git", "GitHub", "Webpack", "Chrome DevTools", "cPanel", "Google Analytics", "Notion", "Slack"],
+      },
+      {
+        id: 5,
+        title: "Hosting & Deployment",
+        items: ["GitHub Pages", "Syskay", "Namecheap", "IONOS"],
+      },
+      {
+        id: 6,
+        title: "Core Competencies",
+        items: ["Responsive Design", "Performance Optimization", "SEO", "Cross-Browser Compatibility", "UI/UX QA", "Accessibility"],
+      },
+    ],
+  },
+
+  experience: {
+    sectionTitle: "Work Experience",
+    sectionSubtitle: "Where I've built, shipped, and maintained production web platforms.",
+    items: [
+      {
+        id: 1,
+        title: "Technology Associate",
+        company: "NerdzFactory Company",
+        location: "Lagos, Nigeria",
+        dates: "Feb 2026 – Present",
+        bullets: [
+          "Designed, built, and deployed the BizGrowth Africa digital ecosystem (bizgrowthafrica.com) using React — CMS, Flutterwave payments, AI chatbot, and a dedicated News site with GA tracking.",
+          "Own uptime, SEO, and feature delivery across corporate web platforms (nerdzfactory.co, nerdzfactory.org), maintaining 98%+ monthly uptime.",
+          "Provide technical support across internal systems, acknowledging issues within 1 hour and resolving 80%+ within 24 hours.",
+          "Built the Talentry waitlist landing page (waitlist.talentry.com.ng) and configured the DesignU LMS (designu.io/courses), supporting a GIZ/LSETF-partnered training program.",
+        ],
+      },
+      {
+        id: 2,
+        title: "Technology and Design Intern",
+        company: "NerdzFactory Company",
+        location: "Ogudu, Lagos",
+        dates: "Mar 2025 – Jan 2026",
+        bullets: [
+          "Led frontend development of public-facing WordPress (Elementor) websites for national partnership initiatives, including the Experience AI Nigeria landing page (Google DeepMind & Raspberry Pi Foundation) and SafeOnline (Meta).",
+          "Supported the Experience AI national rollout, helping reach 150,000+ students and 3,150+ teachers across Nigeria.",
+        ],
+      },
+      {
+        id: 3,
+        title: "Web Developer Intern",
+        company: "Adroitsoft Nigeria Limited",
+        location: "Ogba, Lagos",
+        dates: "Jul 2023 – Oct 2023",
+        bullets: [
+          "Built responsive, client-facing pages using HTML, CSS, and JavaScript; completed certifications in JS, Bootstrap, and Git/GitHub collaboration.",
+        ],
+      },
+      {
+        id: 4,
+        title: "Project Manager",
+        company: "King's Cyber Cafe",
+        location: "Remote",
+        dates: "Sep 2023 – Jun 2024",
+        bullets: [
+          "Directed project timelines and task management for digital initiatives; implemented workflows that improved team efficiency.",
+        ],
+      },
+    ],
+  },
+
+  partners: {
+    sectionTitle: "Trusted By & In Partnership With",
+    organizations: [
+      "Google DeepMind",
+      "Raspberry Pi Foundation",
+      "Meta",
+      "GIZ",
+      "UNDP",
+      "LSETF",
+      "Mastercard Foundation",
     ],
   },
 
   portfolio: {
     sectionTitle: "Key Impact Projects",
     sectionSubtitle: "A selection of web platforms, LMS, and campaign projects delivered for NerdzFactory and partner initiatives.",
-    moreProjectsUrl: "https://linktr.ee/emmanuelokpiaifo",
-    moreProjectsLabel: "More links & projects",
+    moreProjectsUrl: "https://github.com/Emmanuel-Okpiaifo",
+    moreProjectsLabel: "More projects on GitHub",
     projects: [
       {
         id: 1,
-        imageKey: "card1",
+        imageKey: "bizgrowthAfrica",
         category: "React · Web Platform",
         title: "BizGrowth Africa",
-        description: "Designed, built, and deployed a production-ready React web platform supporting African SMEs with business opportunities, resources, and digital tools. Custom CMS for news and updates. Dec 2025 – Jan 2026.",
+        description: "End-to-end React platform connecting African SMEs to business opportunities — CMS (admin.bizgrowthafrica.com), Flutterwave payments, Scaleup Grant page, AI chatbot, and a News site with GA tracking.",
         link: "https://bizgrowthafrica.com",
+        preview: { from: "#0f1f14", to: "#1e4d32", host: "bizgrowthafrica.com" },
       },
       {
         id: 2,
-        imageKey: "card2",
+        imageKey: "experienceAi",
         category: "Landing Page · Partnership",
         title: "Experience AI Webpage",
-        description: "Contributed to the Experience AI Nigeria landing page (Google DeepMind & Raspberry Pi Foundation). Mobile-responsive, accessible; integrated partner logos and CTAs. Impact: 3,150+ teachers, 157,000+ students.",
-        link: "https://nerdzfactory.co/ai-teachers/",
+        description: "Contributed to the Experience AI schools landing page (Google DeepMind & Raspberry Pi Foundation). Mobile-responsive, accessible; integrated partner logos and CTAs. Impact: 3,150+ teachers, 157,000+ students.",
+        link: "https://nerdzfactory.co/ai-schools/",
+        preview: { from: "#141820", to: "#2a3142", host: "nerdzfactory.co/ai-schools", fit: "contain" },
       },
       {
         id: 3,
-        imageKey: "card3",
+        imageKey: "ddmLagos2026",
         category: "WordPress · Partnership",
         title: "DDM Program Website",
-        description: "Developed the 2025 DDM School website (GIZ & LSETF partnership)—responsive layouts, curriculum, application process, testimonials, and live cohort updates.",
-        link: "https://designu.io/design-and-digital-marketing-school/",
+        description: "Developed the 2026 Design and Digital Marketing School Lagos website (GIZ & LSETF partnership)—responsive layouts, curriculum, application process, and live cohort updates.",
+        link: "https://designu.io/design-and-digital-marketing-school-lagos-2026/",
+        preview: { from: "#1c1917", to: "#44403c", host: "designu.io" },
       },
       {
         id: 4,
-        imageKey: "card4",
+        imageKey: "designuLms",
         category: "LMS · WordPress",
         title: "DesignU LMS",
-        description: "Built and launched a WordPress-based learning management system for structured training, course content, and student progress tracking. Dec 2025 – Jan 2026.",
-        link: "https://designu.io/?p=13286",
+        description: "Configured and deployed LMS functionality with full course structure and content upload, supporting structured training and student progress tracking.",
+        link: "https://designu.io/courses/",
+        preview: { from: "#1a1a2e", to: "#312e81", host: "designu.io/courses" },
       },
       {
         id: 5,
-        imageKey: "card5",
+        imageKey: "talentryWaitlist",
+        category: "Landing Page · Automation",
+        title: "Talentry Waitlist",
+        description: "Built a waitlist landing page with automated Google Sheets data capture; diagnosed and resolved a DNS/browser-cache issue on Apache shared hosting.",
+        link: "https://waitlist.talentry.com.ng/",
+        preview: { from: "#1f2937", to: "#4b5563", host: "waitlist.talentry.com.ng" },
+      },
+      {
+        id: 6,
+        imageKey: "ysec",
         category: "WordPress · Forms",
         title: "YSEC Application Portal",
-        description: "Developed multi-step forms with validation for youth social enterprise competition. Improved accessibility and layout; reduced drop-off during applications. May–Jun 2025.",
+        description: "Developed multi-step forms with validation for a youth social enterprise competition. Improved accessibility and layout; reduced drop-off during applications.",
         link: "https://nerdzfactory.co/ysec/",
+        preview: { from: "#1c1917", to: "#3f3f46", host: "nerdzfactory.co/ysec" },
       },
     ],
   },
@@ -132,7 +258,7 @@ export const profile = {
   },
 
   footer: {
-    credit: "Built with care by Emmanuel Okpiaifo.",
+    credit: "Built with care by The Emmanuel Daniel Okpiaifo, EDO.",
   },
 };
 

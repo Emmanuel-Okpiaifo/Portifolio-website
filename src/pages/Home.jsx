@@ -1,35 +1,50 @@
 import Introduction from "../components/introduction/Introduction";
 import Profile from "../components/profile/Profile";
-import WorkProcess from "../components/workProcess/WorkProcess";
+import Experience from "../components/experience/Experience";
 import Portfolio from "../components/portfolio/Portfolio";
-import WorkTogether from "../components/workTogether/WorkTogether";
+import Skills from "../components/skills/Skills";
 import Profession from "../components/profession/Profession";
-import Testimonial from "../components/testimonial/Testimonial";
+import Partners from "../components/testimonial/Testimonial";
+import WorkTogether from "../components/workTogether/WorkTogether";
 import Contact from "../components/contact/Contact";
 
 const Home = () => {
   return (
-    <div className="relative">
-      <div className="introduction-profile-background">
-        <div className="content">
+    <div className="relative overflow-x-hidden">
+      {/* Hero + About */}
+      <div className="hero-shell">
+        <div className="content px-4 sm:px-6">
           <Introduction />
+        </div>
+        <div className="content px-4 sm:px-6">
           <Profile />
         </div>
       </div>
-      <div className="bg-soft-white pt-30">
-        <WorkProcess />
-      </div>
+
+      {/* Experience */}
+      <Experience />
+
+      {/* Portfolio */}
       <Portfolio />
-      <div className="bg-gray-900">
-        <WorkTogether />
-      </div>
-      <div className="bg-soft-white">
+
+      {/* Skills + Services */}
+      <div className="bg-white">
+        <Skills />
         <Profession />
       </div>
-      <div className="mt-12 md:mt-16">
-        <Testimonial />
+
+      {/* Partners */}
+      <Partners />
+
+      {/* CTA */}
+      <div className="bg-edo-charcoal">
+        <WorkTogether />
       </div>
-      <Contact />
+
+      {/* Contact */}
+      <div className="bg-edo-stone pb-16 sm:pb-20 md:pb-28">
+        <Contact />
+      </div>
     </div>
   );
 };

@@ -3,37 +3,28 @@ import { faAngleUp } from "@fortawesome/free-solid-svg-icons";
 import { animateScroll } from "react-scroll";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const scrollToTop = () => {
-  animateScroll.scrollToTop(options); /* To Top */
-  //   animateScroll.scrollToBottom(options); /* To Bottom */
-};
-
-const options = {
-  duration: 500,
-  smooth: true,
-};
+const options = { duration: 500, smooth: true };
 
 const ScrollToTop = () => {
-  const [position, setPosition] = useState(0);
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setPosition(window.scrollY);
-    };
+    const handleScroll = () => setVisible(window.scrollY > 300);
     window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
-    <div className="flex justify-end relative  sm:me-10 z-10 transition-all">
-      <a
-        onClick={scrollToTop}
-        className={`fixed bottom-10 me-5 w-10 h-10 sm:w-12.5 sm:h-12.5 lg:w-15 lg:h-15 flex justify-center items-center rounded-full transition delay-150 duration-500 ease-in-out hover:scale-120 hover:cursor-pointer bg-picto-primary hover:bg-picto-primary-dark text-white ${
-          position < 200 && "scale-0"
-        }`}
-      >
-        <FontAwesomeIcon icon={faAngleUp} size="2xl" />
-      </a>
-    </div>
+    <button
+      type="button"
+      aria-label="Scroll to top"
+      onClick={() => animateScroll.scrollToTop(options)}
+      className={`fixed bottom-5 right-4 sm:bottom-8 sm:right-6 z-50 w-11 h-11 sm:w-12 sm:h-12 flex justify-center items-center rounded-full bg-edo-gold text-edo-charcoal shadow-lg hover:bg-edo-gold-dark hover:scale-110 transition-all duration-300 mb-[env(safe-area-inset-bottom)] mr-[env(safe-area-inset-right)] ${
+        visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"
+      }`}
+    >
+      <FontAwesomeIcon icon={faAngleUp} />
+    </button>
   );
 };
 
