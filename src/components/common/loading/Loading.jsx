@@ -6,14 +6,16 @@ const removeInitialLoader = () => {
   document.getElementById("initial-loader")?.remove();
 };
 
-const Loading = () => {
+const Loading = ({ fading = false }) => {
   useEffect(() => {
     removeInitialLoader();
   }, []);
 
   return (
     <div
-      className="flex flex-col justify-center items-center fixed inset-0 bg-edo-charcoal z-50"
+      className={`flex flex-col justify-center items-center fixed inset-0 bg-edo-charcoal z-[9999] transition-opacity duration-500 ${
+        fading ? "opacity-0 pointer-events-none" : "opacity-100"
+      }`}
       role="status"
       aria-label="Loading"
     >

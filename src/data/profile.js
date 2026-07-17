@@ -20,8 +20,6 @@ export const profile = {
   location: "Lagos, Nigeria",
   address: "9, Joy Egbe Close, Gateway Estate, Magodo, Lagos",
 
-  resumePdfUrl: "/Emmanuel-Okpiaifo-Resume.pdf",
-
   intro: {
     greeting: "Hello, I'm",
     headline: "Emmanuel Daniel Okpiaifo",

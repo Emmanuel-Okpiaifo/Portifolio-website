@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Invoice — EDO</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Work+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    :root {
+      --edo-sage: #d4ddd0;
+      --edo-sage-dark: #b8c4b0;
+      --edo-gold: #c9a227;
+      --edo-gold-dark: #a8841f;
+      --edo-charcoal: #1c1c1c;
+      --edo-cream: #e8e4dd;
+      --edo-stone: #f5f4f0;
+      --stone-500: #78716c;
+      --stone-400: #a8a29e;
+      --font-body: "Work Sans", system-ui, sans-serif;
+      --font-display: "Cormorant Garamond", Georgia, serif;
+      --page-width: 210mm;
+      --page-padding: 14mm;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      font-size: 15px;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    body {
+      font-family: var(--font-body);
+      color: var(--edo-charcoal);
+      background: #e5e4e0;
+      line-height: 1.5;
+      min-height: 100vh;
+      padding: 2rem 1rem 3rem;
+    }
+
+    /* ── Screen toolbar ── */
+    .toolbar {
+      max-width: var(--page-width);
+      margin: 0 auto 1.25rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+
+    .toolbar p {
+      font-size: 0.8rem;
+      color: var(--stone-500);
+    }
+
+    .toolbar-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .btn {
+      font-family: var(--font-body);
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 0.55rem 1.1rem;
+      border-radius: 0.5rem;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+    }
+
+    .btn-primary {
+      background: var(--edo-gold);
+      color: var(--edo-charcoal);
+    }
+
+    .btn-primary:hover {
+      background: var(--edo-gold-dark);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+    }
+
+    .btn-ghost {
+      background: white;
+      color: var(--edo-charcoal);
+      border: 1px solid var(--edo-sage-dark);
+    }
+
+    .btn-ghost:hover {
+      background: var(--edo-stone);
+    }
+
+    /* ── Invoice page ── */
+    .invoice {
+      max-width: var(--page-width);
+      margin: 0 auto;
+      background: #fff;
+      box-shadow:
+        0 4px 6px rgba(0, 0, 0, 0.04),
+        0 24px 48px rgba(0, 0, 0, 0.08);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    /* Header band */
+    .invoice-header {
+      background: linear-gradient(135deg, #141414 0%, var(--edo-charcoal) 55%, #2a2a28 100%);
+      color: #fff;
+      padding: var(--page-padding) var(--page-padding) 1.35rem;
+      position: relative;
+    }
+
+    .invoice-header::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--edo-gold) 20%, var(--edo-gold) 80%, transparent);
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1.5rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      min-width: 0;
+    }
+
+    .logo-badge {
+      flex-shrink: 0;
+      width: 3.5rem;
+      height: 3.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(145deg, #eef2eb 0%, var(--edo-sage) 100%);
+      border: 2px solid rgba(201, 162, 39, 0.55);
+      border-radius: 0.65rem;
+      box-shadow:
+        0 2px 10px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.65);
+    }
+
+    .logo-badge img {
+      width: 78%;
+      height: 78%;
+      object-fit: contain;
+    }
+
+    .brand-text h1 {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: var(--edo-gold);
+      line-height: 1.1;
+    }
+
+    .brand-text .brand-full {
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.72);
+      margin-top: 0.2rem;
+      letter-spacing: 0.02em;
+    }
+
+    .brand-text .tagline {
+      font-size: 0.68rem;
+      color: rgba(255, 255, 255, 0.5);
+      margin-top: 0.35rem;
+      max-width: 22rem;
+      line-height: 1.4;
+    }
+
+    .invoice-meta {
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .invoice-label {
+      font-family: var(--font-display);
+      font-size: 2.1rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      color: #fff;
+      line-height: 1;
+    }
+
+    .invoice-number {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--edo-gold);
+      margin-top: 0.4rem;
+      letter-spacing: 0.06em;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(3, auto);
+      gap: 1.25rem 2rem;
+      justify-content: flex-end;
+      margin-top: 0.85rem;
+    }
+
+    .meta-item label {
+      display: block;
+      font-size: 0.62rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: rgba(255, 255, 255, 0.45);
+      margin-bottom: 0.15rem;
+    }
+
+    .meta-item span {
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    /* Body */
+    .invoice-body {
+      padding: var(--page-padding);
+      background:
+        radial-gradient(ellipse 80% 40% at 0% 0%, rgba(212, 221, 208, 0.18), transparent 55%),
+        radial-gradient(ellipse 60% 35% at 100% 5%, rgba(201, 162, 39, 0.06), transparent 50%),
+        #fff;
+    }
+
+    .parties {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .party-block h2 {
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--edo-gold);
+      margin-bottom: 0.65rem;
+      padding-bottom: 0.45rem;
+      border-bottom: 1px solid var(--edo-sage);
+    }
+
+    .party-block .name {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--edo-charcoal);
+      margin-bottom: 0.35rem;
+    }
+
+    .party-block p {
+      font-size: 0.82rem;
+      color: var(--stone-500);
+      line-height: 1.55;
+    }
+
+    .party-block a {
+      color: var(--edo-gold-dark);
+      text-decoration: none;
+    }
+
+    /* Line items */
+    .items-wrap {
+      border: 1px solid rgba(212, 221, 208, 0.8);
+      border-radius: 0.5rem;
+      overflow: hidden;
+      margin-bottom: 1.5rem;
+      background: #fff;
+    }
+
+    table.items {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    table.items thead {
+      background: var(--edo-stone);
+    }
+
+    table.items th {
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--stone-500);
+      text-align: left;
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--edo-sage);
+    }
+
+    table.items th:last-child,
+    table.items td:last-child {
+      text-align: right;
+    }
+
+    table.items th.col-qty,
+    table.items td.col-qty {
+      text-align: center;
+      width: 4.5rem;
+    }
+
+    table.items th.col-rate,
+    table.items td.col-rate {
+      text-align: right;
+      width: 6.5rem;
+    }
+
+    table.items tbody tr {
+      border-bottom: 1px solid rgba(212, 221, 208, 0.5);
+    }
+
+    table.items tbody tr:last-child {
+      border-bottom: none;
+    }
+
+    table.items tbody tr:nth-child(even) {
+      background: rgba(245, 244, 240, 0.45);
+    }
+
+    table.items td {
+      font-size: 0.84rem;
+      padding: 0.85rem 1rem;
+      vertical-align: top;
+      color: var(--edo-charcoal);
+    }
+
+    table.items .item-title {
+      font-weight: 600;
+      display: block;
+      margin-bottom: 0.15rem;
+    }
+
+    table.items .item-desc {
+      font-size: 0.75rem;
+      color: var(--stone-500);
+      line-height: 1.45;
+    }
+
+    table.items .amount {
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    /* Totals */
+    .bottom-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 2rem;
+      align-items: start;
+    }
+
+    .payment-block h3,
+    .schedule-block h3 {
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--edo-gold);
+      margin-bottom: 0.55rem;
+    }
+
+    .payment-block {
+      margin-top: 1.25rem;
+      padding: 0.85rem 1rem;
+      background: var(--edo-stone);
+      border-radius: 0.45rem;
+      border-left: 3px solid var(--edo-gold);
+    }
+
+    .payment-block .bank-line {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      font-size: 0.78rem;
+      padding: 0.2rem 0;
+    }
+
+    .payment-block .bank-line strong {
+      color: var(--edo-charcoal);
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+
+    .payment-block .bank-line span {
+      text-align: right;
+      color: var(--stone-500);
+      word-break: break-all;
+    }
+
+    .schedule-block {
+      margin-bottom: 1.25rem;
+      padding: 0.85rem 1rem;
+      background: #fff;
+      border-radius: 0.45rem;
+      border: 1px solid var(--edo-sage);
+    }
+
+    .schedule-list {
+      list-style: none;
+    }
+
+    .schedule-list li {
+      display: grid;
+      grid-template-columns: 5.5rem 1fr;
+      gap: 0.75rem;
+      align-items: start;
+      font-size: 0.78rem;
+      padding: 0.55rem 0;
+      border-bottom: 1px solid rgba(212, 221, 208, 0.55);
+      color: var(--stone-500);
+      line-height: 1.5;
+    }
+
+    .schedule-list li:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .schedule-list li:first-child {
+      padding-top: 0;
+    }
+
+    .schedule-list .schedule-amount {
+      font-weight: 700;
+      color: var(--edo-gold-dark);
+      white-space: nowrap;
+    }
+
+    .totals {
+      min-width: 16rem;
+      border: 1px solid var(--edo-sage);
+      border-radius: 0.5rem;
+      overflow: hidden;
+    }
+
+    .totals-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.65rem 1rem;
+      font-size: 0.84rem;
+      border-bottom: 1px solid rgba(212, 221, 208, 0.6);
+    }
+
+    .totals-row:last-child {
+      border-bottom: none;
+    }
+
+    .totals-row .label {
+      color: var(--stone-500);
+      font-weight: 500;
+    }
+
+    .totals-row .value {
+      font-weight: 600;
+      color: var(--edo-charcoal);
+    }
+
+    .totals-row.grand {
+      background: linear-gradient(120deg, rgba(201, 162, 39, 0.18) 0%, rgba(201, 162, 39, 0.06) 100%);
+      padding: 0.9rem 1rem;
+    }
+
+    .totals-row.grand .label {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--edo-charcoal);
+      letter-spacing: 0.04em;
+    }
+
+    .totals-row.grand .value {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--edo-gold-dark);
+    }
+
+    /* Footer */
+    .invoice-footer {
+      padding: 1rem var(--page-padding) 1.25rem;
+      background: var(--edo-stone);
+      border-top: 1px solid var(--edo-sage);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .invoice-footer p {
+      font-size: 0.72rem;
+      color: var(--stone-500);
+    }
+
+    .invoice-footer .thank-you {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      font-style: italic;
+      color: var(--edo-charcoal);
+    }
+
+    .status-badge {
+      display: inline-block;
+      font-size: 0.62rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 0.25rem 0.6rem;
+      border-radius: 999px;
+      margin-top: 0.35rem;
+    }
+
+    .status-badge.draft { background: var(--edo-sage); color: var(--edo-charcoal); }
+    .status-badge.sent { background: rgba(201, 162, 39, 0.2); color: var(--edo-gold-dark); }
+    .status-badge.paid { background: #d1fae5; color: #065f46; }
+    .status-badge.overdue { background: #fee2e2; color: #991b1b; }
+
+    /* Print */
+    @media print {
+      body {
+        background: #fff;
+        padding: 0;
+      }
+
+      .toolbar {
+        display: none !important;
+      }
+
+      .invoice {
+        box-shadow: none;
+        border-radius: 0;
+        max-width: 100%;
+      }
+
+      @page {
+        size: A4;
+        margin: 0;
+      }
+    }
+
+    @media (max-width: 640px) {
+      body { padding: 1rem 0.5rem 2rem; }
+
+      .header-top {
+        flex-direction: column;
+      }
+
+      .invoice-meta {
+        text-align: left;
+        width: 100%;
+      }
+
+      .meta-grid {
+        justify-content: flex-start;
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .parties {
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
+      }
+
+      .bottom-row {
+        grid-template-columns: 1fr;
+      }
+
+      .items-wrap {
+        overflow-x: auto;
+      }
+
+      table.items {
+        min-width: 32rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <p>Edit <strong>INVOICE_CONFIG</strong> in this file, then print or save as PDF.</p>
+    <div class="toolbar-actions">
+      <button type="button" class="btn btn-ghost" onclick="window.location.reload()">Reset</button>
+      <button type="button" class="btn btn-primary" onclick="window.print()">Print / Save PDF</button>
+    </div>
+  </div>
+
+  <article class="invoice" id="invoice-root" aria-label="Invoice"></article>
+
+  <script>
+    /**
+     * ═══════════════════════════════════════════════════════════════
+     *  INVOICE CONFIG — edit this block for each new invoice
+     * ═══════════════════════════════════════════════════════════════
+     */
+    const INVOICE_CONFIG = {
+      number: "INV-2026-TERRALYTE-001",
+      issueDate: "2026-06-30",
+      dueDate: "2026-06-30",
+      status: "sent",
+      currency: "NGN",
+      currencySymbol: "₦",
+      taxRate: 0,
+      taxLabel: "VAT",
+      totalLabel: "Total Project Cost",
+
+      from: {
+        monogram: "EDO",
+        name: "Emmanuel Daniel Okpiaifo",
+        brandTitle: "The Emmanuel Daniel Okpiaifo",
+        tagline: "Frontend Developer · React & WordPress · Web Platform Builder",
+        email: "emmaokpiaifo@gmail.com",
+        phone: "(+234) 9160852509",
+        address: "9, Joy Egbe Close, Gateway Estate, Magodo, Lagos, Nigeria",
+        website: "",
+      },
+
+      to: {
+        name: "Terralyte Consult",
+        contact: "",
+        email: "",
+        phone: "",
+        address: "",
+      },
+
+      items: [
+        {
+          title: "Website Design & Development",
+          description: "",
+          qty: 1,
+          rate: 75000,
+        },
+        {
+          title: "Hosting & Deployment",
+          description: "",
+          qty: 1,
+          rate: 55000,
+        },
+      ],
+
+      paymentSchedule: [
+        {
+          amount: 37500,
+          description:
+            "Initial deposit (50% of the development fee) to commence the project.",
+        },
+        {
+          amount: 37500,
+          description:
+            "Balance of the development fee upon completion of the website and before final handover.",
+        },
+        {
+          amount: 55000,
+          description:
+            "Hosting and deployment fee, payable anytime before the website is made live, after the development process is concluded.",
+        },
+      ],
+
+      payment: {
+        method: "Bank Transfer",
+        bankName: "First Bank Nigeria",
+        accountName: "Okpiaifo Emmanuel Daniel",
+        accountNumber: "3222647347",
+        reference: "INV-2026-TERRALYTE-001",
+      },
+
+      logoSrc: "../public/edo-logo.png",
+    };
+    // ═══════════════════════════════════════════════════════════════
+
+    const STATUS_LABELS = {
+      draft: "Draft",
+      sent: "Sent",
+      paid: "Paid",
+      overdue: "Overdue",
+    };
+
+    function formatMoney(amount) {
+      const { currencySymbol, currency } = INVOICE_CONFIG;
+      const formatted = new Intl.NumberFormat("en-NG", {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2,
+      }).format(amount);
+      return `${currencySymbol}${formatted}`;
+    }
+
+    function formatDate(iso) {
+      if (!iso) return "—";
+      const d = new Date(iso + "T12:00:00");
+      return d.toLocaleDateString("en-GB", {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+      });
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function renderInvoice() {
+      const cfg = INVOICE_CONFIG;
+      const subtotal = cfg.items.reduce((sum, item) => sum + item.qty * item.rate, 0);
+      const tax = subtotal * (cfg.taxRate || 0);
+      const total = subtotal + tax;
+      const status = STATUS_LABELS[cfg.status] || cfg.status;
+
+      const itemRows = cfg.items
+        .map(
+          (item) => `
+        <tr>
+          <td>
+            <span class="item-title">${escapeHtml(item.title)}</span>
+            ${item.description ? `<span class="item-desc">${escapeHtml(item.description)}</span>` : ""}
+          </td>
+          <td class="col-qty">${item.qty}</td>
+          <td class="col-rate">${formatMoney(item.rate)}</td>
+          <td class="amount">${formatMoney(item.qty * item.rate)}</td>
+        </tr>`
+        )
+        .join("");
+
+      const taxRow =
+        cfg.taxRate > 0
+          ? `
+        <div class="totals-row">
+          <span class="label">${escapeHtml(cfg.taxLabel)} (${(cfg.taxRate * 100).toFixed(1)}%)</span>
+          <span class="value">${formatMoney(tax)}</span>
+        </div>`
+          : "";
+
+      const websiteLine = cfg.from.website
+        ? `<p><a href="${escapeHtml(cfg.from.website)}">${escapeHtml(cfg.from.website.replace(/^https?:\/\//, ""))}</a></p>`
+        : "";
+
+      const clientContact = cfg.to.contact
+        ? `<p>Attn: ${escapeHtml(cfg.to.contact)}</p>`
+        : "";
+
+      const clientAddress = cfg.to.address
+        ? `<p>${escapeHtml(cfg.to.address)}</p>`
+        : "";
+
+      const clientEmail = cfg.to.email
+        ? `<p><a href="mailto:${escapeHtml(cfg.to.email)}">${escapeHtml(cfg.to.email)}</a></p>`
+        : "";
+
+      const clientPhone = cfg.to.phone
+        ? `<p>${escapeHtml(cfg.to.phone)}</p>`
+        : "";
+
+      const scheduleRows = (cfg.paymentSchedule || [])
+        .map(
+          (step) => `
+        <li>
+          <span class="schedule-amount">${formatMoney(step.amount)}</span>
+          <span>${escapeHtml(step.description)}</span>
+        </li>`
+        )
+        .join("");
+
+      const scheduleBlock = scheduleRows
+        ? `
+          <div class="schedule-block">
+            <h3>Payment Schedule</h3>
+            <ul class="schedule-list">${scheduleRows}</ul>
+          </div>`
+        : "";
+
+      const totalLabel = cfg.totalLabel || "Total Due";
+
+      document.getElementById("invoice-root").innerHTML = `
+    <header class="invoice-header">
+      <div class="header-top">
+        <div class="brand">
+          <div class="logo-badge">
+            <img src="${escapeHtml(cfg.logoSrc)}" alt="${escapeHtml(cfg.from.monogram)} logo" />
+          </div>
+          <div class="brand-text">
+            <h1>${escapeHtml(cfg.from.monogram)}</h1>
+            <div class="brand-full">${escapeHtml(cfg.from.brandTitle)}</div>
+            <div class="tagline">${escapeHtml(cfg.from.tagline)}</div>
+          </div>
+        </div>
+        <div class="invoice-meta">
+          <div class="invoice-label">Invoice</div>
+          <div class="invoice-number">${escapeHtml(cfg.number)}</div>
+          <span class="status-badge ${escapeHtml(cfg.status)}">${escapeHtml(status)}</span>
+          <div class="meta-grid">
+            <div class="meta-item">
+              <label>Issue Date</label>
+              <span>${formatDate(cfg.issueDate)}</span>
+            </div>
+            <div class="meta-item">
+              <label>Due Date</label>
+              <span>${formatDate(cfg.dueDate)}</span>
+            </div>
+            <div class="meta-item">
+              <label>Currency</label>
+              <span>${escapeHtml(cfg.currency)}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="invoice-body">
+      <div class="parties">
+        <section class="party-block">
+          <h2>Bill From</h2>
+          <p class="name">${escapeHtml(cfg.from.name)}</p>
+          <p>${escapeHtml(cfg.from.address)}</p>
+          <p><a href="mailto:${escapeHtml(cfg.from.email)}">${escapeHtml(cfg.from.email)}</a></p>
+          <p>${escapeHtml(cfg.from.phone)}</p>
+          ${websiteLine}
+        </section>
+        <section class="party-block">
+          <h2>Bill To</h2>
+          <p class="name">${escapeHtml(cfg.to.name)}</p>
+          ${clientContact}
+          ${clientAddress}
+          ${clientEmail}
+          ${clientPhone}
+        </section>
+      </div>
+
+      <div class="items-wrap">
+        <table class="items">
+          <thead>
+            <tr>
+              <th>Description</th>
+              <th class="col-qty">Qty</th>
+              <th class="col-rate">Rate</th>
+              <th>Amount</th>
+            </tr>
+          </thead>
+          <tbody>${itemRows}</tbody>
+        </table>
+      </div>
+
+      <div class="bottom-row">
+        <div class="bottom-side">
+          ${scheduleBlock}
+          <div class="payment-block">
+            <h3>Payment Details</h3>
+            <div class="bank-line"><strong>Method</strong><span>${escapeHtml(cfg.payment.method)}</span></div>
+            <div class="bank-line"><strong>Bank</strong><span>${escapeHtml(cfg.payment.bankName)}</span></div>
+            <div class="bank-line"><strong>Account Name</strong><span>${escapeHtml(cfg.payment.accountName)}</span></div>
+            <div class="bank-line"><strong>Account No.</strong><span>${escapeHtml(cfg.payment.accountNumber)}</span></div>
+            <div class="bank-line"><strong>Reference</strong><span>${escapeHtml(cfg.payment.reference)}</span></div>
+          </div>
+        </div>
+        <div class="totals">
+          <div class="totals-row">
+            <span class="label">Subtotal</span>
+            <span class="value">${formatMoney(subtotal)}</span>
+          </div>
+          ${taxRow}
+          <div class="totals-row grand">
+            <span class="label">${escapeHtml(totalLabel)}</span>
+            <span class="value">${formatMoney(total)}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="invoice-footer">
+      <p class="thank-you">Thank you for your trust.</p>
+      <p>Built with care by ${escapeHtml(cfg.from.brandTitle)}, ${escapeHtml(cfg.from.monogram)}.</p>
+    </footer>`;
+
+      document.title = `Invoice ${cfg.number} — ${cfg.from.monogram}`;
+    }
+
+    renderInvoice();
+  </script>
+</body>
+</html>

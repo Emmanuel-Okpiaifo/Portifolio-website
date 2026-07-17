@@ -1,4 +1,4 @@
-import profileImage from "../../assets/Emmanuel.jpg";
+import profileImage from "../../assets/Emmanuel-hero.png";
 import Logo from "../common/logo/Logo";
 import InformationSummary from "./InformationSummary";
 import { profile } from "../../data/profile";
