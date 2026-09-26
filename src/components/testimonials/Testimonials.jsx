@@ -99,17 +99,17 @@ const Testimonials = () => {
 
         {!loading && !error && items.length > 0 && (
           <>
-            <div className={`grid grid-cols-1 gap-4 sm:gap-6 ${gridClass}`}>
+            <div className={`grid grid-cols-1 items-start gap-4 sm:gap-6 ${gridClass}`}>
               {items.map((item, index) => (
-                <AnimateOnScroll key={item.id} animation="fade-up" delay={index * 70}>
-                  <article className="h-full min-w-0 rounded-2xl border border-stone-200/80 bg-edo-stone/40 p-5 sm:p-6 flex flex-col overflow-hidden">
+                <AnimateOnScroll key={item.id} animation="fade-up" delay={index * 70} className="min-w-0 w-full">
+                  <article className="min-w-0 w-full rounded-2xl border border-stone-200/80 bg-edo-stone/40 p-5 sm:p-6 overflow-hidden">
                     <p className="font-display text-4xl sm:text-5xl leading-none text-edo-gold/80" aria-hidden="true">
                       “
                     </p>
-                    <p className="mt-2 text-stone-700 leading-relaxed flex-1 break-words">
+                    <p className="mt-3 text-stone-700 leading-relaxed break-words">
                       {item.message}
                     </p>
-                    <div className="mt-6 flex items-center gap-3 min-w-0">
+                    <div className="mt-5 flex items-center gap-3 min-w-0">
                       <img
                         src={item.photo}
                         alt={`${item.firstName} ${item.lastName}`}
