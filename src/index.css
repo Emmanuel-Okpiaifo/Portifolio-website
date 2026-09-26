@@ -66,6 +66,18 @@ body {
   @apply text-stone-600 text-base sm:text-lg pt-4 leading-relaxed;
 }
 
+#introduction,
+#profile,
+#experience,
+#portfolio,
+#skills,
+#services,
+#partners,
+#testimonials,
+#contact {
+  scroll-margin-top: 5.5rem;
+}
+
 .center {
   @apply flex justify-center items-center;
 }

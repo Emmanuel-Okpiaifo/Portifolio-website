@@ -5,6 +5,7 @@ import Portfolio from "../components/portfolio/Portfolio";
 import Skills from "../components/skills/Skills";
 import Profession from "../components/profession/Profession";
 import Partners from "../components/testimonial/Testimonial";
+import Testimonials from "../components/testimonials/Testimonials";
 import WorkTogether from "../components/workTogether/WorkTogether";
 import Contact from "../components/contact/Contact";
 
@@ -35,6 +36,9 @@ const Home = () => {
 
       {/* Partners */}
       <Partners />
+
+      {/* Testimonials */}
+      <Testimonials />
 
       {/* CTA */}
       <div className="bg-edo-charcoal">

@@ -2,6 +2,8 @@ import { lazy, Suspense } from "react";
 import { createBrowserRouter } from "react-router-dom";
 import Loading from "../components/common/loading/Loading";
 const Home = lazy(() => import("../pages/Home"));
+const LeaveTestimonial = lazy(() => import("../pages/LeaveTestimonial"));
+const ReviewTestimonials = lazy(() => import("../pages/ReviewTestimonials"));
 const Main = lazy(() => import("../layouts/Main"));
 
 const ghPages =
@@ -21,6 +23,14 @@ export const router = createBrowserRouter(
         {
           path: "/",
           element: <Home></Home>,
+        },
+        {
+          path: "/leave-a-testimonial",
+          element: <LeaveTestimonial />,
+        },
+        {
+          path: "/review-testimonials",
+          element: <ReviewTestimonials />,
         },
       ],
     },
