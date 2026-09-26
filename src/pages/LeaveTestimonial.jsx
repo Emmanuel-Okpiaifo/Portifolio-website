@@ -1,4 +1,6 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import Loading from "../components/common/loading/Loading";
+import Notice from "../components/common/notice/Notice";
 import { compressProfileImage, submitTestimonial } from "../lib/testimonialsStore";
 import { isSupabaseConfigured } from "../lib/supabaseClient";
 
@@ -11,9 +13,9 @@ const LeaveTestimonial = () => {
   const [message, setMessage] = useState("");
   const [previewUrl, setPreviewUrl] = useState("");
   const [photoBlob, setPhotoBlob] = useState(null);
-  const [error, setError] = useState("");
-  const [saved, setSaved] = useState(false);
-  const [busy, setBusy] = useState(false);
+  const [notice, setNotice] = useState(null);
+  const [working, setWorking] = useState("");
+  const closeNotice = useCallback(() => setNotice(null), []);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -30,14 +32,14 @@ const LeaveTestimonial = () => {
 
   const onPhoto = async (event) => {
     const file = event.target.files?.[0];
-    setError("");
-    setSaved(false);
+    setNotice(null);
     if (previewUrl) URL.revokeObjectURL(previewUrl);
     if (!file) {
       setPreviewUrl("");
       setPhotoBlob(null);
       return;
     }
+    if (file.size > 2 * 1024 * 1024) setWorking("Preparing your photo");
     try {
       const blob = await compressProfileImage(file);
       setPhotoBlob(blob);
@@ -46,32 +48,51 @@ const LeaveTestimonial = () => {
       setPreviewUrl("");
       setPhotoBlob(null);
       event.target.value = "";
-      setError(err instanceof Error ? err.message : "That photo could not be used.");
+      setNotice({
+        tone: "error",
+        title: "Photo not added",
+        message: err instanceof Error ? err.message : "That photo could not be used.",
+      });
+    } finally {
+      setWorking("");
     }
   };
 
   const onSubmit = async (event) => {
     event.preventDefault();
-    setError("");
+    setNotice(null);
     if (!photoBlob) {
-      setError("Add a profile photo.");
+      setNotice({
+        tone: "error",
+        title: "Photo missing",
+        message: "Add a profile photo.",
+      });
       return;
     }
-    setBusy(true);
+    const form = event.currentTarget;
+    setWorking("Uploading your photo");
     try {
       await submitTestimonial({ firstName, lastName, message, photoBlob });
-      setSaved(true);
       setFirstName("");
       setLastName("");
       setMessage("");
       setPhotoBlob(null);
       if (previewUrl) URL.revokeObjectURL(previewUrl);
       setPreviewUrl("");
-      event.currentTarget.reset();
+      form.reset();
+      setNotice({
+        tone: "success",
+        title: "Thank you",
+        message: "Your note and photo were received. They will appear on the homepage after they are accepted.",
+      });
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Your testimonial could not be sent.");
+      setNotice({
+        tone: "error",
+        title: "Could not send",
+        message: err instanceof Error ? err.message : "Your testimonial could not be sent.",
+      });
     } finally {
-      setBusy(false);
+      setWorking("");
     }
   };
 
@@ -90,18 +111,6 @@ const LeaveTestimonial = () => {
           {!isSupabaseConfigured() && (
             <p className="mt-6 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900" role="status">
               This form is not connected to Supabase yet.
-            </p>
-          )}
-
-          {saved && (
-            <div className="mt-6 rounded-xl border border-edo-sage bg-edo-sage/30 px-4 py-3 text-sm text-edo-charcoal" role="status">
-              Thank you. Your note and photo were received. They will appear on the homepage after they are accepted.
-            </div>
-          )}
-
-          {error && (
-            <p className="mt-6 text-sm font-medium text-red-700" role="alert">
-              {error}
             </p>
           )}
 
@@ -161,12 +170,11 @@ const LeaveTestimonial = () => {
                   <span className="block text-sm font-medium text-edo-charcoal">
                     {previewUrl ? "Change photo" : "Choose a photo"}
                   </span>
-                  <span className="block text-xs text-stone-500 mt-0.5">JPG, PNG, or WEBP</span>
+                  <span className="block text-xs text-stone-500 mt-0.5">JPG, PNG, or WEBP, up to 10 MB</span>
                   <input
                     type="file"
                     name="photo"
                     accept="image/jpeg,image/png,image/webp"
-                    required={!photoBlob}
                     className="sr-only"
                     onChange={onPhoto}
                   />
@@ -176,14 +184,16 @@ const LeaveTestimonial = () => {
 
             <button
               type="submit"
-              disabled={busy || !isSupabaseConfigured()}
+              disabled={Boolean(working) || !isSupabaseConfigured()}
               className="btn btn-primary btn-touch btn-section w-full sm:w-auto sm:self-start mt-2"
             >
-              {busy ? "Sending…" : "Send testimonial"}
+              Send testimonial
             </button>
           </form>
         </div>
       </div>
+      {working && <Loading label={working} />}
+      <Notice notice={notice} onClose={closeNotice} />
     </section>
   );
 };

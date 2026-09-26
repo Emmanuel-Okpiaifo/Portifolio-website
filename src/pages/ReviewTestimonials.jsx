@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import Notice from "../components/common/notice/Notice";
 import { getSupabase, isSupabaseConfigured } from "../lib/supabaseClient";
 import {
   deleteTestimonial,
@@ -23,7 +24,10 @@ const ReviewTestimonials = () => {
   const [session, setSession] = useState(null);
   const [ready, setReady] = useState(false);
   const [items, setItems] = useState([]);
-  const [error, setError] = useState("");
+  const [notice, setNotice] = useState(null);
+  const closeNotice = useCallback(() => setNotice(null), []);
+  const showError = (message) => setNotice({ tone: "error", title: "Could not finish", message });
+  const showSuccess = (title, message) => setNotice({ tone: "success", title, message });
   const [busyId, setBusyId] = useState("");
   const [savingOrder, setSavingOrder] = useState(false);
   const [email, setEmail] = useState("");
@@ -70,7 +74,7 @@ const ReviewTestimonials = () => {
     let active = true;
     refresh()
       .catch((err) => {
-        if (active) setError(err instanceof Error ? err.message : "Testimonials could not be loaded.");
+        if (active) showError(err instanceof Error ? err.message : "Testimonials could not be loaded.");
       });
     return () => {
       active = false;
@@ -79,24 +83,30 @@ const ReviewTestimonials = () => {
 
   const signIn = async (event) => {
     event.preventDefault();
-    setError("");
+    setNotice(null);
     setSigningIn(true);
     try {
       const { error: signInError } = await getSupabase().auth.signInWithPassword({ email, password });
-      if (signInError) setError("That email or password was not accepted.");
+      if (signInError) showError("That email or password was not accepted.");
     } finally {
       setSigningIn(false);
     }
   };
 
   const updateStatus = async (id, status) => {
-    setError("");
+    setNotice(null);
     setBusyId(id);
     try {
       await setTestimonialStatus(id, status);
       await refresh();
+      showSuccess(
+        status === "approved" ? "Now on the site" : "Hidden",
+        status === "approved"
+          ? "This note is showing on the homepage."
+          : "This note is hidden from the homepage."
+      );
     } catch (err) {
-      setError(err instanceof Error ? err.message : "That testimonial could not be updated.");
+      showError(err instanceof Error ? err.message : "That testimonial could not be updated.");
     } finally {
       setBusyId("");
     }
@@ -110,26 +120,27 @@ const ReviewTestimonials = () => {
     const [moved] = reordered.splice(index, 1);
     reordered.splice(target, 0, moved);
     setItems(reordered);
-    setError("");
+    setNotice(null);
     setSavingOrder(true);
     try {
       await saveTestimonialOrder(reordered.map((item) => item.id));
     } catch (err) {
       setItems(previous);
-      setError(err instanceof Error ? err.message : "The order could not be saved.");
+      showError(err instanceof Error ? err.message : "The order could not be saved.");
     } finally {
       setSavingOrder(false);
     }
   };
 
   const remove = async (item) => {
-    setError("");
+    setNotice(null);
     setBusyId(item.id);
     try {
       await deleteTestimonial(item.id, item.photoPath);
       await refresh();
+      showSuccess("Deleted", "This note and its photo were removed.");
     } catch (err) {
-      setError(err instanceof Error ? err.message : "That testimonial could not be removed.");
+      showError(err instanceof Error ? err.message : "That testimonial could not be removed.");
     } finally {
       setBusyId("");
     }
@@ -150,12 +161,6 @@ const ReviewTestimonials = () => {
           {!isSupabaseConfigured() && (
             <p className="mt-6 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
               Add your Supabase URL and anon key before reviewing notes.
-            </p>
-          )}
-
-          {error && (
-            <p className="mt-6 text-sm font-medium text-red-700" role="alert">
-              {error}
             </p>
           )}
 
@@ -256,6 +261,7 @@ const ReviewTestimonials = () => {
           )}
         </div>
       </div>
+      <Notice notice={notice} onClose={closeNotice} />
     </section>
   );
 };

@@ -25,7 +25,7 @@ const friendlyError = (error, fallback) => {
     return "That action is not allowed.";
   }
   if (/payload too large|exceeded/i.test(message)) {
-    return "That photo is too large. Choose a smaller one.";
+    return "That photo is larger than 10 MB. Choose a smaller one.";
   }
   if (/sort_order/i.test(message)) {
     return "Run the updated supabase/setup-testimonials.sql once so the order can be saved.";
@@ -146,8 +146,8 @@ export const compressProfileImage = (file) =>
       reject(new Error("Use a JPG, PNG, or WEBP photo."));
       return;
     }
-    if (file.size > 5 * 1024 * 1024) {
-      reject(new Error("That photo is larger than 5 MB. Choose a smaller one."));
+    if (file.size > 10 * 1024 * 1024) {
+      reject(new Error("That photo is larger than 10 MB. Choose a smaller one."));
       return;
     }
 
@@ -167,17 +167,26 @@ export const compressProfileImage = (file) =>
       }
       context.drawImage(image, 0, 0, canvas.width, canvas.height);
       URL.revokeObjectURL(objectUrl);
-      canvas.toBlob(
-        (blob) => {
-          if (!blob) {
+      const toJpeg = (quality, done) => {
+        canvas.toBlob((blob) => done(blob), "image/jpeg", quality);
+      };
+      toJpeg(0.82, (blob) => {
+        if (!blob) {
+          reject(new Error("This photo could not be prepared. Try another one."));
+          return;
+        }
+        if (blob.size <= 900 * 1024) {
+          resolve(blob);
+          return;
+        }
+        toJpeg(0.6, (smaller) => {
+          if (!smaller) {
             reject(new Error("This photo could not be prepared. Try another one."));
             return;
           }
-          resolve(blob);
-        },
-        "image/jpeg",
-        0.82
-      );
+          resolve(smaller);
+        });
+      });
     };
     image.onerror = () => {
       URL.revokeObjectURL(objectUrl);

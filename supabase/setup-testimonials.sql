@@ -91,12 +91,12 @@ values (
   'testimonial-photos',
   'testimonial-photos',
   true,
-  1048576,
+  10485760,
   array['image/jpeg']
 )
 on conflict (id) do update
 set public = true,
-    file_size_limit = 1048576,
+    file_size_limit = 10485760,
     allowed_mime_types = array['image/jpeg'];
 
 drop policy if exists "Anyone can upload a testimonial photo" on storage.objects;

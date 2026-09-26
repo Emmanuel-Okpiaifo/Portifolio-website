@@ -6,7 +6,7 @@ const removeInitialLoader = () => {
   document.getElementById("initial-loader")?.remove();
 };
 
-const Loading = ({ fading = false }) => {
+const Loading = ({ fading = false, label = "" }) => {
   useEffect(() => {
     removeInitialLoader();
   }, []);
@@ -17,7 +17,7 @@ const Loading = ({ fading = false }) => {
         fading ? "opacity-0 pointer-events-none" : "opacity-100"
       }`}
       role="status"
-      aria-label="Loading"
+      aria-label={label || "Loading"}
     >
       <div className="relative flex items-center justify-center w-24 h-24 sm:w-28 sm:h-28">
         <div className="absolute inset-0 rounded-full border-2 border-edo-sage/30 border-t-edo-gold animate-loader-spin" />
@@ -35,6 +35,9 @@ const Loading = ({ fading = false }) => {
       <p className="mt-6 font-display text-edo-cream/80 text-sm tracking-[0.25em] uppercase animate-loader-fade">
         {profile.brand?.monogram ?? "EDO"}
       </p>
+      {label && (
+        <p className="mt-3 max-w-xs px-6 text-center text-sm text-edo-cream/70">{label}</p>
+      )}
     </div>
   );
 };
