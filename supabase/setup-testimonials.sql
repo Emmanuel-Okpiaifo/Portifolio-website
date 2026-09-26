@@ -9,22 +9,40 @@ create table if not exists public.testimonials (
   message text not null check (char_length(message) between 1 and 600),
   photo_path text not null,
   status text not null default 'pending' check (status in ('pending', 'approved', 'hidden')),
+  sort_order integer not null default 0,
   created_at timestamptz not null default now()
 );
+
+alter table public.testimonials add column if not exists sort_order integer not null default 0;
 
 alter table public.testimonials enable row level security;
 
 create or replace function public.force_pending_testimonial()
 returns trigger
 language plpgsql
+security definer
+set search_path = public
 as $$
 begin
   if auth.role() = 'anon' then
     new.status := 'pending';
   end if;
+  if new.sort_order is null or new.sort_order = 0 then
+    select coalesce(max(sort_order), 0) + 1 into new.sort_order from public.testimonials;
+  end if;
   return new;
 end;
 $$;
+
+with ranked as (
+  select id, row_number() over (order by created_at) as position
+  from public.testimonials
+  where sort_order = 0
+)
+update public.testimonials as testimonials
+set sort_order = ranked.position
+from ranked
+where testimonials.id = ranked.id;
 
 drop trigger if exists testimonials_force_pending on public.testimonials;
 create trigger testimonials_force_pending

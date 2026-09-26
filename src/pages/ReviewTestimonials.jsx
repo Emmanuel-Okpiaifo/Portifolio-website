@@ -3,11 +3,21 @@ import { getSupabase, isSupabaseConfigured } from "../lib/supabaseClient";
 import {
   deleteTestimonial,
   loadReviewTestimonials,
+  saveTestimonialOrder,
   setTestimonialStatus,
 } from "../lib/testimonialsStore";
 
+const STATUS_LABEL = {
+  pending: "Pending",
+  approved: "On the site",
+  hidden: "Hidden",
+};
+
 const INPUT_CLASS =
   "w-full min-w-0 border-0 border-b-2 border-stone-200 bg-transparent py-3 text-base text-edo-charcoal placeholder:text-stone-400 focus:border-edo-gold focus:outline-none transition-colors";
+
+const moveButtonClass =
+  "btn btn-touch bg-white border border-stone-300 w-full px-3 text-sm disabled:opacity-40";
 
 const ReviewTestimonials = () => {
   const [session, setSession] = useState(null);
@@ -15,6 +25,7 @@ const ReviewTestimonials = () => {
   const [items, setItems] = useState([]);
   const [error, setError] = useState("");
   const [busyId, setBusyId] = useState("");
+  const [savingOrder, setSavingOrder] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [signingIn, setSigningIn] = useState(false);
@@ -91,6 +102,26 @@ const ReviewTestimonials = () => {
     }
   };
 
+  const move = async (index, direction) => {
+    const target = index + direction;
+    if (target < 0 || target >= items.length || savingOrder) return;
+    const previous = items;
+    const reordered = [...items];
+    const [moved] = reordered.splice(index, 1);
+    reordered.splice(target, 0, moved);
+    setItems(reordered);
+    setError("");
+    setSavingOrder(true);
+    try {
+      await saveTestimonialOrder(reordered.map((item) => item.id));
+    } catch (err) {
+      setItems(previous);
+      setError(err instanceof Error ? err.message : "The order could not be saved.");
+    } finally {
+      setSavingOrder(false);
+    }
+  };
+
   const remove = async (item) => {
     setError("");
     setBusyId(item.id);
@@ -109,11 +140,11 @@ const ReviewTestimonials = () => {
       <div className="content px-4 sm:px-6">
         <div className="max-w-3xl mx-auto min-w-0">
           <p className="section-eyebrow">Private</p>
-          <h1 className="font-display text-3xl sm:text-4xl font-semibold text-edo-charcoal">
+          <h1 className="font-display text-[1.75rem] sm:text-4xl font-semibold text-edo-charcoal text-balance leading-tight">
             Review testimonials
           </h1>
           <p className="mt-3 text-stone-600">
-            Accept a note to show it on the homepage. The photo is stored with the note.
+            Show, hide, delete, or move every note. The order here is the order on the homepage.
           </p>
 
           {!isSupabaseConfigured() && (
@@ -138,7 +169,7 @@ const ReviewTestimonials = () => {
                 <span className="text-xs font-semibold uppercase tracking-wider text-stone-500">Password</span>
                 <input type="password" required autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} className={INPUT_CLASS} />
               </label>
-              <button type="submit" disabled={signingIn} className="btn btn-primary btn-touch w-full sm:w-auto">
+              <button type="submit" disabled={signingIn} className="btn btn-primary btn-touch w-full sm:w-auto sm:self-start">
                 {signingIn ? "Signing in…" : "Sign in"}
               </button>
             </form>
@@ -163,27 +194,37 @@ const ReviewTestimonials = () => {
 
           {session && items.length > 0 && (
             <ul className="mt-8 flex flex-col gap-4">
-              {items.map((item) => (
+              {items.map((item, index) => (
                 <li key={item.id} className="bg-white rounded-2xl border border-stone-200 p-4 sm:p-5 min-w-0">
-                  <div className="flex flex-col sm:flex-row gap-4 min-w-0">
-                    <img
-                      src={item.photo}
-                      alt={`${item.firstName} ${item.lastName}`}
-                      className="h-16 w-16 shrink-0 rounded-full object-cover border-2 border-edo-gold/40"
-                    />
+                  <div className="flex gap-3 sm:gap-4 min-w-0">
+                    <div className="hidden sm:flex flex-col gap-2 shrink-0">
+                      <button type="button" aria-label={`Move ${item.firstName} ${item.lastName} up`} disabled={savingOrder || index === 0} onClick={() => move(index, -1)} className={moveButtonClass}>Up</button>
+                      <button type="button" aria-label={`Move ${item.firstName} ${item.lastName} down`} disabled={savingOrder || index === items.length - 1} onClick={() => move(index, 1)} className={moveButtonClass}>Down</button>
+                    </div>
                     <div className="min-w-0 flex-1">
-                      <div className="flex flex-wrap items-center gap-2">
-                        <p className="font-semibold text-edo-charcoal break-words">
-                          {item.firstName} {item.lastName}
-                        </p>
-                        <span className="text-xs uppercase tracking-wide font-semibold text-edo-gold-dark">
-                          {item.status}
-                        </span>
+                      <div className="flex gap-3 min-w-0">
+                        <img
+                          src={item.photo}
+                          alt=""
+                          className="h-14 w-14 sm:h-16 sm:w-16 shrink-0 rounded-full object-cover border-2 border-edo-gold/40"
+                        />
+                        <div className="min-w-0 flex-1">
+                          <p className="font-semibold text-edo-charcoal break-words">
+                            {index + 1}. {item.firstName} {item.lastName}
+                          </p>
+                          <p className="mt-1 text-xs uppercase tracking-wide font-semibold text-edo-gold-dark">
+                            {STATUS_LABEL[item.status] ?? item.status}
+                          </p>
+                        </div>
                       </div>
-                      <p className="mt-2 text-sm text-stone-700 leading-relaxed break-words">{item.message}</p>
+                      <p className="mt-3 text-sm text-stone-700 leading-relaxed break-words">{item.message}</p>
                     </div>
                   </div>
-                  <div className="mt-4 flex flex-col sm:flex-row gap-2">
+                  <div className="mt-4 grid grid-cols-2 gap-2 sm:hidden">
+                    <button type="button" aria-label={`Move ${item.firstName} ${item.lastName} up`} disabled={savingOrder || index === 0} onClick={() => move(index, -1)} className={moveButtonClass}>Up</button>
+                    <button type="button" aria-label={`Move ${item.firstName} ${item.lastName} down`} disabled={savingOrder || index === items.length - 1} onClick={() => move(index, 1)} className={moveButtonClass}>Down</button>
+                  </div>
+                  <div className="mt-2 sm:mt-4 grid grid-cols-1 sm:grid-cols-3 gap-2">
                     <button
                       type="button"
                       disabled={busyId === item.id || item.status === "approved"}

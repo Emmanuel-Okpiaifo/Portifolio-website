@@ -27,6 +27,9 @@ const friendlyError = (error, fallback) => {
   if (/payload too large|exceeded/i.test(message)) {
     return "That photo is too large. Choose a smaller one.";
   }
+  if (/sort_order/i.test(message)) {
+    return "Run the updated supabase/setup-testimonials.sql once so the order can be saved.";
+  }
   return fallback;
 };
 
@@ -44,6 +47,7 @@ const toCard = (row) => ({
   photo: photoUrl(row.photo_path),
   photoPath: row.photo_path,
   status: row.status,
+  sortOrder: row.sort_order ?? 0,
   createdAt: row.created_at,
 });
 
@@ -52,9 +56,10 @@ export const loadApprovedTestimonials = async () => {
   const supabase = requireClient();
   const { data, error } = await supabase
     .from("testimonials")
-    .select("id, first_name, last_name, message, photo_path, status, created_at")
+    .select("id, first_name, last_name, message, photo_path, status, sort_order, created_at")
     .eq("status", "approved")
-    .order("created_at", { ascending: false });
+    .order("sort_order", { ascending: true })
+    .order("created_at", { ascending: true });
 
   if (error) throw new Error(friendlyError(error, "Testimonials could not be loaded."));
   return (data ?? []).map(toCard);
@@ -99,8 +104,9 @@ export const loadReviewTestimonials = async () => {
   const supabase = requireClient();
   const { data, error } = await supabase
     .from("testimonials")
-    .select("id, first_name, last_name, message, photo_path, status, created_at")
-    .order("created_at", { ascending: false });
+    .select("id, first_name, last_name, message, photo_path, status, sort_order, created_at")
+    .order("sort_order", { ascending: true })
+    .order("created_at", { ascending: true });
 
   if (error) throw new Error(friendlyError(error, "Testimonials could not be loaded."));
   return (data ?? []).map(toCard);
@@ -110,6 +116,17 @@ export const setTestimonialStatus = async (id, status) => {
   const supabase = requireClient();
   const { error } = await supabase.from("testimonials").update({ status }).eq("id", id);
   if (error) throw new Error(friendlyError(error, "That testimonial could not be updated."));
+};
+
+export const saveTestimonialOrder = async (orderedIds) => {
+  const supabase = requireClient();
+  const results = await Promise.all(
+    orderedIds.map((id, index) =>
+      supabase.from("testimonials").update({ sort_order: index + 1 }).eq("id", id)
+    )
+  );
+  const failed = results.find((result) => result.error);
+  if (failed?.error) throw new Error(friendlyError(failed.error, "The order could not be saved."));
 };
 
 export const deleteTestimonial = async (id, photoPath) => {

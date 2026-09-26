@@ -151,14 +151,17 @@ const LeaveTestimonial = () => {
 
             <div className="min-w-0">
               <span className="text-xs font-semibold uppercase tracking-wider text-stone-500">Profile photo</span>
-              <label className="mt-3 flex items-center gap-4 min-w-0 cursor-pointer">
+              <label className="mt-3 flex items-center gap-3 sm:gap-4 min-w-0 cursor-pointer">
                 {previewUrl ? (
                   <img src={previewUrl} alt="" className="h-16 w-16 shrink-0 rounded-full object-cover border-2 border-edo-gold/50" />
                 ) : (
                   <span className="h-16 w-16 shrink-0 rounded-full bg-edo-stone border border-dashed border-stone-300" />
                 )}
-                <span className="text-sm text-stone-600 break-words min-w-0">
-                  {previewUrl ? "Change photo" : "Upload a JPG, PNG, or WEBP"}
+                <span className="min-w-0">
+                  <span className="block text-sm font-medium text-edo-charcoal">
+                    {previewUrl ? "Change photo" : "Choose a photo"}
+                  </span>
+                  <span className="block text-xs text-stone-500 mt-0.5">JPG, PNG, or WEBP</span>
                   <input
                     type="file"
                     name="photo"
@@ -174,7 +177,7 @@ const LeaveTestimonial = () => {
             <button
               type="submit"
               disabled={busy || !isSupabaseConfigured()}
-              className="btn btn-primary btn-touch btn-section w-full sm:w-auto mt-2"
+              className="btn btn-primary btn-touch btn-section w-full sm:w-auto sm:self-start mt-2"
             >
               {busy ? "Sending…" : "Send testimonial"}
             </button>
