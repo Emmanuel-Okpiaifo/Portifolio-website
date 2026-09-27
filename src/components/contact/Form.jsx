@@ -36,7 +36,7 @@ const Form = () => {
   return (
     <div className="w-full min-w-0 max-w-full">
       <p className="text-stone-600 text-sm sm:text-base leading-relaxed break-words">
-        Fill out the form below — it will open your email app with a message addressed to{" "}
+        Fill out the form below. It will open your email app with a message addressed to{" "}
         <a href={`mailto:${recipient}`} className="text-edo-gold font-medium hover:underline break-all">
           {recipient}
         </a>

@@ -29,8 +29,8 @@ export const profile = {
 
   stats: [
     { id: 1, title: "Experience", description: "Since 2023" },
-    { id: 2, title: "Key Projects", description: "10+" },
-    { id: 3, title: "Partner Orgs", description: "5" },
+    { id: 2, title: "Key Projects", description: "7" },
+    { id: 3, title: "Programme Partners", description: "5" },
   ],
 
   about: {
@@ -71,12 +71,12 @@ export const profile = {
       {
         id: 1,
         title: "Web Platform Development",
-        description: "I design, build, and deploy production React platforms — CMS, payment gateways (Flutterwave), AI chatbot integrations, and analytics — for SMEs and program initiatives.",
+        description: "I design, build, and deploy production React platforms with CMS, payment gateways (Flutterwave), AI chatbot integrations and analytics, for SMEs and programme initiatives.",
       },
       {
         id: 2,
         title: "Digital Platform & CMS Management",
-        description: "I manage multi-site WordPress (Elementor) ecosystems and LMS platforms — maintaining 98%+ uptime, security updates, SEO, and brand consistency across corporate properties.",
+        description: "I manage multi-site WordPress (Elementor) ecosystems and LMS platforms, maintaining 98%+ uptime, security updates, SEO, and brand consistency across corporate properties.",
       },
       {
         id: 3,
@@ -125,7 +125,7 @@ export const profile = {
 
   experience: {
     sectionTitle: "Work Experience",
-    sectionSubtitle: "Tech, people operations, and brand work.",
+    sectionSubtitle: "Where I've built, shipped, and maintained production web platforms.",
     items: [
       {
         id: 1,
@@ -211,7 +211,7 @@ export const profile = {
 
   partners: {
     sectionEyebrow: "NerdzFactory",
-    sectionTitle: "Programmes I've built for at NerdzFactory",
+    sectionTitle: "Programme partners I've built for at NerdzFactory",
     organizations: [
       "Google DeepMind",
       "Raspberry Pi Foundation",
@@ -234,7 +234,7 @@ export const profile = {
         title: "BizGrowth Africa",
         story: {
           problem: "African SMEs needed a single place to find business opportunities.",
-          built: "A React platform — CMS (admin.bizgrowthafrica.com), Flutterwave payments, Scaleup Grant page, AI chatbot, and a News site with GA tracking.",
+          built: "A React platform: CMS (admin.bizgrowthafrica.com), Flutterwave payments, Scaleup Grant page, AI chatbot, and a News site with GA tracking.",
           result: "The platform currently supports 20+ daily content uploads and 98%+ uptime.",
         },
         link: "https://bizgrowthafrica.com",
@@ -263,7 +263,7 @@ export const profile = {
         imageKey: "ddmLagos2026",
         category: "WordPress",
         title: "DDM Program Website",
-        description: "Developed the 2026 Design and Digital Marketing School Lagos website (GIZ & LSETF partnership)—responsive layouts, curriculum, application process, and live cohort updates.",
+        description: "Developed the 2026 Design and Digital Marketing School Lagos website (GIZ & LSETF partnership): responsive layouts, curriculum, application process, and live cohort updates.",
         link: "https://designu.io/design-and-digital-marketing-school-lagos-2026/",
         preview: { from: "#1c1917", to: "#44403c", host: "designu.io" },
       },
