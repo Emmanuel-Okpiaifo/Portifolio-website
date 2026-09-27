@@ -11,6 +11,12 @@ const LeaveTestimonial = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [message, setMessage] = useState("");
+  const [role, setRole] = useState("");
+  const [company, setCompany] = useState("");
+  const [relationship, setRelationship] = useState("");
+  const [linkedinUrl, setLinkedinUrl] = useState("");
+  const [email, setEmail] = useState("");
+  const [consent, setConsent] = useState(false);
   const [previewUrl, setPreviewUrl] = useState("");
   const [photoBlob, setPhotoBlob] = useState(null);
   const [notice, setNotice] = useState(null);
@@ -20,7 +26,7 @@ const LeaveTestimonial = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
     const previous = document.title;
-    document.title = "Leave a testimonial — EDO";
+    document.title = "Leave a testimonial | Emmanuel (Daniel) Okpiaifo";
     return () => {
       document.title = previous;
     };
@@ -61,21 +67,38 @@ const LeaveTestimonial = () => {
   const onSubmit = async (event) => {
     event.preventDefault();
     setNotice(null);
-    if (!photoBlob) {
+    if (!consent) {
       setNotice({
         tone: "error",
-        title: "Photo missing",
-        message: "Add a profile photo.",
+        title: "Consent needed",
+        message: "Tick the box if you're happy for Emmanuel to quote this on his website and LinkedIn.",
       });
       return;
     }
     const form = event.currentTarget;
-    setWorking("Uploading your photo");
+    setWorking(photoBlob ? "Uploading your photo" : "Sending your note");
     try {
-      await submitTestimonial({ firstName, lastName, message, photoBlob });
+      await submitTestimonial({
+        firstName,
+        lastName,
+        message,
+        role,
+        company,
+        relationship,
+        linkedinUrl,
+        email,
+        consent,
+        photoBlob,
+      });
       setFirstName("");
       setLastName("");
       setMessage("");
+      setRole("");
+      setCompany("");
+      setRelationship("");
+      setLinkedinUrl("");
+      setEmail("");
+      setConsent(false);
       setPhotoBlob(null);
       if (previewUrl) URL.revokeObjectURL(previewUrl);
       setPreviewUrl("");
@@ -83,7 +106,7 @@ const LeaveTestimonial = () => {
       setNotice({
         tone: "success",
         title: "Thank you",
-        message: "Your note and photo were received. They will appear on the homepage after they are accepted.",
+        message: "Your note was received. It will appear on the homepage after Emmanuel accepts it. Your email, if you left one, stays private.",
       });
     } catch (err) {
       setNotice({
@@ -105,7 +128,7 @@ const LeaveTestimonial = () => {
             Share your experience
           </h1>
           <p className="mt-3 text-stone-600 leading-relaxed">
-            Leave a short note and a photo. Emmanuel reviews each one before it appears on the homepage.
+            What did we work on, and what did Emmanuel do that made a difference? Emmanuel reviews each note before it appears on the homepage. A photo is optional.
           </p>
 
           {!isSupabaseConfigured() && (
@@ -144,6 +167,29 @@ const LeaveTestimonial = () => {
               </label>
             </div>
 
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              <label className="block min-w-0">
+                <span className="text-xs font-semibold uppercase tracking-wider text-stone-500">Role</span>
+                <input name="role" value={role} onChange={(e) => setRole(e.target.value)} maxLength={80} required autoComplete="organization-title" className={INPUT_CLASS} placeholder="Product designer" />
+              </label>
+              <label className="block min-w-0">
+                <span className="text-xs font-semibold uppercase tracking-wider text-stone-500">Company</span>
+                <input name="company" value={company} onChange={(e) => setCompany(e.target.value)} maxLength={80} required autoComplete="organization" className={INPUT_CLASS} placeholder="Company name" />
+              </label>
+            </div>
+
+            <label className="block min-w-0">
+              <span className="text-xs font-semibold uppercase tracking-wider text-stone-500">How do you know Emmanuel?</span>
+              <select name="relationship" value={relationship} onChange={(e) => setRelationship(e.target.value)} required className={`${INPUT_CLASS} bg-white`}>
+                <option value="">Choose one</option>
+                <option>Colleague</option>
+                <option>Manager</option>
+                <option>Client</option>
+                <option>Mentee</option>
+                <option>Other</option>
+              </select>
+            </label>
+
             <label className="block min-w-0">
               <span className="text-xs font-semibold uppercase tracking-wider text-stone-500">Testimonial</span>
               <textarea
@@ -154,12 +200,23 @@ const LeaveTestimonial = () => {
                 required
                 rows={5}
                 className={`${INPUT_CLASS} resize-y min-h-[8rem]`}
-                placeholder="What was it like working together?"
+                placeholder="What did we work on, and what did Emmanuel do that made a difference?"
               />
             </label>
 
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              <label className="block min-w-0">
+                <span className="text-xs font-semibold uppercase tracking-wider text-stone-500">LinkedIn URL <span className="normal-case tracking-normal text-stone-400">(optional)</span></span>
+                <input name="linkedinUrl" value={linkedinUrl} onChange={(e) => setLinkedinUrl(e.target.value)} maxLength={200} inputMode="url" className={INPUT_CLASS} placeholder="https://www.linkedin.com/in/..." />
+              </label>
+              <label className="block min-w-0">
+                <span className="text-xs font-semibold uppercase tracking-wider text-stone-500">Email <span className="normal-case tracking-normal text-stone-400">(optional, kept private)</span></span>
+                <input name="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} maxLength={120} autoComplete="email" className={INPUT_CLASS} placeholder="you@example.com" />
+              </label>
+            </div>
+
             <div className="min-w-0">
-              <span className="text-xs font-semibold uppercase tracking-wider text-stone-500">Profile photo</span>
+              <span className="text-xs font-semibold uppercase tracking-wider text-stone-500">Profile photo <span className="normal-case tracking-normal text-stone-400">(optional)</span></span>
               <label className="mt-3 flex items-center gap-3 sm:gap-4 min-w-0 cursor-pointer">
                 {previewUrl ? (
                   <img src={previewUrl} alt="" className="h-16 w-16 shrink-0 rounded-full object-cover border-2 border-edo-gold/50" />
@@ -170,7 +227,7 @@ const LeaveTestimonial = () => {
                   <span className="block text-sm font-medium text-edo-charcoal">
                     {previewUrl ? "Change photo" : "Choose a photo"}
                   </span>
-                  <span className="block text-xs text-stone-500 mt-0.5">JPG, PNG, or WEBP, up to 10 MB</span>
+                  <span className="block text-xs text-stone-500 mt-0.5">JPG, PNG, or WEBP. Saved at 2 MB or less. An initials avatar is used if you skip this.</span>
                   <input
                     type="file"
                     name="photo"
@@ -181,6 +238,18 @@ const LeaveTestimonial = () => {
                 </span>
               </label>
             </div>
+
+            <label className="flex items-start gap-3 text-sm text-stone-700 leading-relaxed">
+              <input
+                type="checkbox"
+                name="consent"
+                checked={consent}
+                onChange={(e) => setConsent(e.target.checked)}
+                required
+                className="mt-1 h-4 w-4 shrink-0 accent-edo-gold"
+              />
+              <span>I&apos;m happy for Emmanuel to quote this on his website and LinkedIn.</span>
+            </label>
 
             <button
               type="submit"

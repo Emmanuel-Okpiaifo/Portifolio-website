@@ -1,11 +1,11 @@
-# Emmanuel Daniel Okpiaifo — Portfolio
+# Emmanuel (Daniel) Okpiaifo — Portfolio
 
 <p align="center">
   <img src="public/edo-logo.png" alt="EDO logo" width="110" />
 </p>
 
 <p align="center">
-  <strong>Frontend Developer · React & WordPress · Web Platform & Digital Product Builder</strong>
+  <strong>Web Developer (React &amp; WordPress) | Digital Platforms &amp; Product Delivery</strong>
 </p>
 
 <p align="center">
@@ -20,11 +20,9 @@
 
 ## Welcome
 
-This is the official portfolio website of **Emmanuel Daniel Okpiaifo (EDO)**.
+This is the official portfolio website of **Emmanuel (Daniel) Okpiaifo**.
 
-I build and manage reliable digital products that help businesses, training programmes, and social-impact initiatives serve their users effectively. My work covers modern React applications, WordPress websites, learning platforms, payment systems, content management tools, analytics, and workflow automation.
-
-I am currently a **Technology Associate at NerdzFactory Company** in Lagos, Nigeria.
+I'm a web developer and digital operator in Lagos. As Technology Associate at NerdzFactory, I built the BizGrowth Africa platform end to end and keep the company's web platforms running. Part-time, I also run people operations at AfriVate, where I started as a Frontend Developer on its volunteer platform.
 
 ## What I can help you build
 
@@ -42,9 +40,9 @@ I am currently a **Technology Associate at NerdzFactory Company** in Lagos, Nige
 
 ## Why work with me?
 
-- **2+ years of practical experience** building and maintaining real digital products
-- **10+ key projects** delivered across business, education, and social-impact initiatives
-- Experience supporting work connected to organizations such as **Google DeepMind, Raspberry Pi Foundation, Meta, GIZ, UNDP, LSETF, and Mastercard Foundation**
+- Building digital products since 2023
+- **10+ key projects** delivered across business, education, and programme sites
+- Programmes built for at NerdzFactory: **Google DeepMind, Raspberry Pi Foundation, Meta, GIZ, and LSETF**
 - Experience taking products from planning and development through deployment and post-launch support
 - A strong focus on responsive design, accessibility, reliability, performance, and clear user experiences
 - Experience maintaining platforms at **98%+ monthly uptime**
@@ -59,7 +57,7 @@ An end-to-end React ecosystem supporting African SMEs with business opportunitie
 
 ### Experience AI Nigeria
 
-Contributed to a responsive and accessible national programme webpage delivered in connection with Google DeepMind and Raspberry Pi Foundation. The programme reached more than 157,000 students and 3,150 teachers.
+Built the national landing page for Experience AI Nigeria (Google DeepMind & Raspberry Pi Foundation), a programme that trained 1,142 teachers in its first year and targets 157,000 students by December 2026.
 
 [View the Experience AI webpage](https://nerdzfactory.co/ai-schools/)
 
@@ -83,7 +81,7 @@ Built a responsive waitlist landing page with automated Google Sheets data captu
 
 ### YSEC Application Portal
 
-Developed accessible multi-step application forms with validation for a youth social enterprise competition.
+Built multistep application forms with validation on WordPress for the Youth Sustainable Enterprise Challenge, a NerdzFactory programme, with improved accessibility and layout.
 
 [View the YSEC portal](https://nerdzfactory.co/ysec/)
 
@@ -102,7 +100,7 @@ The portfolio presents:
 
 ## Let’s work together
 
-I am available for freelance projects, collaborations, digital initiatives, and ongoing website support.
+I'm open to web developer and digital operator roles in Nigeria: on-site, hybrid or remote.
 
 - **Email:** [emmaokpiaifo@gmail.com](mailto:emmaokpiaifo@gmail.com)
 - **Call:** [(+234) 916 085 2509](tel:+2349160852509)
@@ -179,5 +177,5 @@ The project is configured for:
 ---
 
 <p align="center">
-  Built with care by <strong>The Emmanuel Daniel Okpiaifo, EDO.</strong>
+  Built with care by <strong>Emmanuel (Daniel) Okpiaifo.</strong>
 </p>

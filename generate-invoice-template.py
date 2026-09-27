@@ -92,9 +92,9 @@ def build_header(doc: Document) -> None:
     bp = brand_cell.paragraphs[0]
     add_run(bp, "EDO", bold=True, size=20, color=GOLD, font=FONT_DISPLAY)
     p2 = brand_cell.add_paragraph()
-    add_run(p2, "The Emmanuel Daniel Okpiaifo", size=9, color=RGBColor(0xCC, 0xCC, 0xCC))
+    add_run(p2, "Emmanuel (Daniel) Okpiaifo", size=9, color=RGBColor(0xCC, 0xCC, 0xCC))
     p3 = brand_cell.add_paragraph()
-    add_run(p3, "Frontend Developer · React & WordPress · Web Platform Builder", size=8, color=MUTED)
+    add_run(p3, "Web Developer (React & WordPress) | Digital Platforms & Product Delivery", size=8, color=MUTED)
 
     mp = meta_cell.paragraphs[0]
     mp.alignment = WD_ALIGN_PARAGRAPH.RIGHT
@@ -137,7 +137,7 @@ def build_parties(doc: Document) -> None:
     add_run(fp, "BILL FROM", bold=True, size=9, color=GOLD)
     for line, bold in (
         ("Emmanuel Daniel Okpiaifo", True),
-        ("9, Joy Egbe Close, Gateway Estate, Magodo, Lagos, Nigeria", False),
+        ("Lagos, Nigeria (on-site, hybrid or remote)", False),
         ("emmaokpiaifo@gmail.com", False),
         ("(+234) 9160852509", False),
     ):
@@ -321,7 +321,7 @@ def build_footer(doc: Document) -> None:
     add_run(left.paragraphs[0], "Thank you for your trust.", italic=True, size=11, color=CHARCOAL, font=FONT_DISPLAY)
     rp = right.paragraphs[0]
     rp.alignment = WD_ALIGN_PARAGRAPH.RIGHT
-    add_run(rp, "Built with care by The Emmanuel Daniel Okpiaifo, EDO.", size=8, color=STONE_TEXT)
+    add_run(rp, "Built with care by Emmanuel (Daniel) Okpiaifo.", size=8, color=STONE_TEXT)
 
 
 def build_instructions(doc: Document) -> None:

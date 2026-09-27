@@ -11,7 +11,7 @@ const Logo = ({
   badge = false,
   glow = false,
   className = "h-12 w-12 sm:h-14 sm:w-14",
-  alt = profile.brand?.displayName ?? "EDO — The Emmanuel Daniel Okpiaifo",
+  alt = profile.brand?.displayName ?? "Emmanuel (Daniel) Okpiaifo",
   ...props
 }) => {
   const imgClass = badge

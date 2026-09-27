@@ -1,6 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import { Link as ScrollLink } from "react-scroll";
-import { Link as RouterLink, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { profile } from "../../../data/profile";
 import Logo from "../logo/Logo";
 import SocialMedia from "../socialMedia/SocialMedia";
@@ -15,30 +14,25 @@ const navItems = [
   { id: 7, name: "Testimonials", url: "testimonials" },
 ];
 
-const SectionLink = ({ to, className, onClick, children, spy = false }) => {
+const SectionLink = ({ to, className, onClick, children }) => {
   const { pathname } = useLocation();
 
-  if (pathname === "/") {
-    return (
-      <ScrollLink
-        to={to}
-        smooth
-        duration={800}
-        spy={spy}
-        offset={-72}
-        activeClass={spy ? "!text-edo-gold" : undefined}
-        className={className}
-        onClick={onClick}
-      >
-        {children}
-      </ScrollLink>
-    );
-  }
+  const href = pathname === "/" ? `#${to}` : `/#${to}`;
 
   return (
-    <RouterLink to={`/#${to}`} className={className} onClick={onClick}>
+    <a
+      href={href}
+      className={className}
+      onClick={(event) => {
+        if (pathname === "/") {
+          event.preventDefault();
+          document.getElementById(to)?.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+        onClick?.();
+      }}
+    >
       {children}
-    </RouterLink>
+    </a>
   );
 };
 
@@ -113,7 +107,7 @@ const NavBar = () => {
             <span className="font-display text-sm xs:text-base sm:text-lg font-bold text-edo-gold tracking-wide">
               {profile.brand.monogram}
             </span>
-            <span className="hidden lg:block whitespace-nowrap text-sm font-semibold text-edo-charcoal">
+            <span className="hidden lg:block max-w-[9rem] text-[11px] font-semibold leading-tight text-edo-charcoal">
               {profile.brand.title}
             </span>
           </span>

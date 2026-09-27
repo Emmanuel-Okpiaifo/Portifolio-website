@@ -8,7 +8,7 @@ const Partners = () => {
     <section className="section-shell bg-white border-t border-stone-100" id="partners">
       <div className="content px-4 sm:px-6">
         <AnimateOnScroll animation="fade-up" className="section-header">
-          <p className="section-eyebrow">Collaborations</p>
+          <p className="section-eyebrow">{partners.sectionEyebrow}</p>
           <h2 className="section-title">{partners.sectionTitle}</h2>
         </AnimateOnScroll>
         <div className="flex flex-wrap justify-center gap-3 max-w-4xl mx-auto">

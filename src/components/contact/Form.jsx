@@ -13,7 +13,6 @@ const Form = () => {
     const data = new FormData(e.currentTarget);
     const name = data.get("name");
     const email = data.get("email");
-    const location = data.get("location");
     const subject = data.get("subject");
     const message = data.get("message");
 
@@ -21,7 +20,6 @@ const Form = () => {
     const mailBody = [
       `Name: ${name}`,
       `Email: ${email}`,
-      `Location: ${location}`,
       "",
       "Message:",
       message,
@@ -54,7 +52,6 @@ const Form = () => {
       <form className="flex flex-col gap-4 sm:gap-5 mt-6 w-full min-w-0 max-w-full" onSubmit={handleSubmit}>
         <input type="text" name="name" placeholder="Name*" className={INPUT_CLASS} required />
         <input type="email" name="email" placeholder="Your email*" className={INPUT_CLASS} required autoComplete="email" />
-        <input type="text" name="location" placeholder="Location*" className={INPUT_CLASS} required />
         <input type="text" name="subject" placeholder="Subject*" className={INPUT_CLASS} required />
         <textarea
           name="message"
@@ -65,7 +62,7 @@ const Form = () => {
         />
         <button
           type="submit"
-          className="btn btn-primary btn-touch btn-section w-full mt-1"
+          className="btn btn-primary btn-touch btn-section w-[calc(100%-6.5rem)] sm:w-auto sm:self-start mt-1"
         >
           Send Message
         </button>

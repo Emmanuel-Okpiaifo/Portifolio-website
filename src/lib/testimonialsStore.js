@@ -24,8 +24,8 @@ const friendlyError = (error, fallback) => {
   if (/row-level security|permission|not authorized/i.test(message)) {
     return "That action is not allowed.";
   }
-  if (/payload too large|exceeded/i.test(message)) {
-    return "That photo is larger than 10 MB. Choose a smaller one.";
+  if (/payload too large|exceeded|file size/i.test(message)) {
+    return "That photo is larger than 2 MB after it is prepared. Choose a smaller one.";
   }
   if (/sort_order/i.test(message)) {
     return "Run the updated supabase/setup-testimonials.sql once so the order can be saved.";
@@ -49,15 +49,20 @@ const toCard = (row) => ({
   status: row.status,
   sortOrder: row.sort_order ?? 0,
   createdAt: row.created_at,
+  role: row.role || "",
+  company: row.company || "",
+  relationship: row.relationship || "",
+  linkedinUrl: row.linkedin_url || "",
+  email: row.email || "",
+  consent: row.consent === true,
 });
 
 export const loadApprovedTestimonials = async () => {
   if (!isSupabaseConfigured()) return [];
   const supabase = requireClient();
   const { data, error } = await supabase
-    .from("testimonials")
-    .select("id, first_name, last_name, message, photo_path, status, sort_order, created_at")
-    .eq("status", "approved")
+    .from("testimonials_public")
+    .select("id, first_name, last_name, message, photo_path, status, sort_order, created_at, role, company, relationship, linkedin_url")
     .order("sort_order", { ascending: true })
     .order("created_at", { ascending: true });
 
@@ -65,25 +70,55 @@ export const loadApprovedTestimonials = async () => {
   return (data ?? []).map(toCard);
 };
 
-export const submitTestimonial = async ({ firstName, lastName, message, photoBlob }) => {
+const RELATIONSHIPS = new Set(["Colleague", "Manager", "Client", "Mentee", "Other"]);
+
+export const submitTestimonial = async ({
+  firstName,
+  lastName,
+  message,
+  role,
+  company,
+  relationship,
+  linkedinUrl,
+  email,
+  consent,
+  photoBlob,
+}) => {
   const supabase = requireClient();
   const entry = {
     firstName: cleanText(firstName, MAX_NAME),
     lastName: cleanText(lastName, MAX_NAME),
     message: cleanText(message, MAX_MESSAGE),
+    role: cleanText(role, 80),
+    company: cleanText(company, 80),
+    relationship: cleanText(relationship, 40),
+    linkedinUrl: cleanText(linkedinUrl, 200),
+    email: cleanText(email, 120),
   };
 
-  if (!entry.firstName || !entry.lastName || !entry.message || !photoBlob) {
-    throw new Error("Please complete every field before submitting.");
+  if (!entry.firstName || !entry.lastName || !entry.message || !entry.role || !entry.company || !RELATIONSHIPS.has(entry.relationship)) {
+    throw new Error("Please complete every required field before submitting.");
+  }
+  if (!consent) {
+    throw new Error("Consent is required before this note can be sent.");
+  }
+  if (entry.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(entry.email)) {
+    throw new Error("That email address does not look valid.");
   }
 
-  const photoPath = `${crypto.randomUUID()}.jpg`;
-  const { error: uploadError } = await supabase.storage.from(BUCKET).upload(photoPath, photoBlob, {
-    contentType: "image/jpeg",
-    upsert: false,
-  });
-  if (uploadError) {
-    throw new Error(friendlyError(uploadError, "The profile photo could not be uploaded."));
+  let photoPath = null;
+  if (photoBlob) {
+    if (photoBlob.size > 2 * 1024 * 1024) {
+      throw new Error("That photo is larger than 2 MB after it is prepared. Choose a smaller one.");
+    }
+    photoPath = `${crypto.randomUUID()}.jpg`;
+    const { error: uploadError } = await supabase.storage.from(BUCKET).upload(photoPath, photoBlob, {
+      contentType: "image/jpeg",
+      upsert: false,
+    });
+    if (uploadError) {
+      throw new Error(friendlyError(uploadError, "The profile photo could not be uploaded."));
+    }
   }
 
   const { error } = await supabase.from("testimonials").insert({
@@ -92,10 +127,16 @@ export const submitTestimonial = async ({ firstName, lastName, message, photoBlo
     message: entry.message,
     photo_path: photoPath,
     status: "pending",
+    role: entry.role,
+    company: entry.company,
+    relationship: entry.relationship,
+    linkedin_url: entry.linkedinUrl || null,
+    email: entry.email || null,
+    consent: true,
   });
 
   if (error) {
-    await supabase.storage.from(BUCKET).remove([photoPath]);
+    if (photoPath) await supabase.storage.from(BUCKET).remove([photoPath]);
     throw new Error(friendlyError(error, "Your testimonial could not be sent."));
   }
 };
@@ -104,7 +145,7 @@ export const loadReviewTestimonials = async () => {
   const supabase = requireClient();
   const { data, error } = await supabase
     .from("testimonials")
-    .select("id, first_name, last_name, message, photo_path, status, sort_order, created_at")
+    .select("id, first_name, last_name, message, photo_path, status, sort_order, created_at, role, company, relationship, linkedin_url, email, consent")
     .order("sort_order", { ascending: true })
     .order("created_at", { ascending: true });
 
@@ -147,7 +188,7 @@ export const compressProfileImage = (file) =>
       return;
     }
     if (file.size > 10 * 1024 * 1024) {
-      reject(new Error("That photo is larger than 10 MB. Choose a smaller one."));
+      reject(new Error("That photo is too large to prepare. Choose one under 10 MB; it is saved at 2 MB or less."));
       return;
     }
 

@@ -56,9 +56,17 @@ const Projects = ({ data }) => {
         <h3 className="font-display text-xl font-semibold text-edo-charcoal pt-2 mb-3">
           {data?.title}
         </h3>
-        <p className="text-stone-600 text-sm leading-relaxed flex-1">
-          {data?.description}
-        </p>
+        {data?.story ? (
+          <div className="text-stone-600 text-sm leading-relaxed space-y-2">
+            <p><span className="font-semibold text-edo-charcoal">Problem. </span>{data.story.problem}</p>
+            <p><span className="font-semibold text-edo-charcoal">What I built. </span>{data.story.built}</p>
+            <p><span className="font-semibold text-edo-charcoal">Result. </span>{data.story.result}</p>
+          </div>
+        ) : (
+          <p className="text-stone-600 text-sm leading-relaxed">
+            {data?.description}
+          </p>
+        )}
         <a
           href={data?.link}
           target="_blank"

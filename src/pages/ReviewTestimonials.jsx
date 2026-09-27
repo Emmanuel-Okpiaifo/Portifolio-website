@@ -42,11 +42,25 @@ const ReviewTestimonials = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
     const previous = document.title;
-    document.title = "Review testimonials — EDO";
+    document.title = "Review testimonials | Emmanuel (Daniel) Okpiaifo";
+    let robots = document.querySelector('meta[name="robots"]');
+    const createdRobots = !robots;
+    if (!robots) {
+      robots = document.createElement("meta");
+      robots.setAttribute("name", "robots");
+      document.head.appendChild(robots);
+    }
+    const previousRobots = robots.getAttribute("content");
+    robots.setAttribute("content", "noindex");
     const supabase = getSupabase();
     if (!supabase) {
       setReady(true);
-      return undefined;
+      return () => {
+        document.title = previous;
+        if (createdRobots) robots.remove();
+        else if (previousRobots == null) robots.removeAttribute("content");
+        else robots.setAttribute("content", previousRobots);
+      };
     }
 
     let active = true;
@@ -63,6 +77,9 @@ const ReviewTestimonials = () => {
       active = false;
       data.subscription.unsubscribe();
       document.title = previous;
+      if (createdRobots) robots.remove();
+      else if (previousRobots == null) robots.removeAttribute("content");
+      else robots.setAttribute("content", previousRobots);
     };
   }, []);
 
@@ -208,11 +225,17 @@ const ReviewTestimonials = () => {
                     </div>
                     <div className="min-w-0 flex-1">
                       <div className="flex gap-3 min-w-0">
-                        <img
-                          src={item.photo}
-                          alt=""
-                          className="h-14 w-14 sm:h-16 sm:w-16 shrink-0 rounded-full object-cover border-2 border-edo-gold/40"
-                        />
+                        {item.photo ? (
+                          <img
+                            src={item.photo}
+                            alt=""
+                            className="h-14 w-14 sm:h-16 sm:w-16 shrink-0 rounded-full object-cover border-2 border-edo-gold/40"
+                          />
+                        ) : (
+                          <span className="h-14 w-14 sm:h-16 sm:w-16 shrink-0 rounded-full border-2 border-edo-gold/40 bg-edo-sage text-edo-charcoal text-sm font-semibold inline-flex items-center justify-center" aria-hidden="true">
+                            {(item.firstName?.[0] || "").toUpperCase()}{(item.lastName?.[0] || "").toUpperCase()}
+                          </span>
+                        )}
                         <div className="min-w-0 flex-1">
                           <p className="font-semibold text-edo-charcoal break-words">
                             {index + 1}. {item.firstName} {item.lastName}
@@ -220,9 +243,20 @@ const ReviewTestimonials = () => {
                           <p className="mt-1 text-xs uppercase tracking-wide font-semibold text-edo-gold-dark">
                             {STATUS_LABEL[item.status] ?? item.status}
                           </p>
+                          {(item.role || item.company) && (
+                            <p className="mt-1 text-sm text-stone-600 break-words">
+                              {[item.role, item.company].filter(Boolean).join(", ")}
+                            </p>
+                          )}
                         </div>
                       </div>
                       <p className="mt-3 text-sm text-stone-700 leading-relaxed break-words">{item.message}</p>
+                      <dl className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-1 text-xs text-stone-600 break-words">
+                        <div><dt className="inline font-semibold text-stone-500">How they know Emmanuel: </dt><dd className="inline">{item.relationship || "—"}</dd></div>
+                        <div><dt className="inline font-semibold text-stone-500">LinkedIn: </dt><dd className="inline">{item.linkedinUrl || "—"}</dd></div>
+                        <div><dt className="inline font-semibold text-stone-500">Email (private): </dt><dd className="inline">{item.email || "—"}</dd></div>
+                        <div><dt className="inline font-semibold text-stone-500">Consent: </dt><dd className="inline">{item.consent ? "Yes" : "Not recorded"}</dd></div>
+                      </dl>
                     </div>
                   </div>
                   <div className="mt-4 grid grid-cols-2 gap-2 sm:hidden">

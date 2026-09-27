@@ -1,4 +1,3 @@
-import { Link } from "react-scroll";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import AnimateOnScroll from "../common/animate/AnimateOnScroll";
@@ -16,18 +15,36 @@ const WorkTogether = () => {
         <p className="text-edo-cream/70 text-base sm:text-lg mt-6 leading-relaxed">
           {workTogether.subtitle}
         </p>
-        <Link
-          to="contact"
-          smooth
-          duration={800}
-          className="btn btn-primary btn-touch mt-10 px-8 py-3 text-base font-semibold btn-section inline-flex items-center justify-center gap-2 group w-full sm:w-auto max-w-md sm:max-w-none mx-auto"
-        >
-          Let&apos;s work together
-          <FontAwesomeIcon
-            icon={faArrowRight}
-            className="transition-transform group-hover:translate-x-1"
-          />
-        </Link>
+        <div className="mt-10 flex flex-col sm:flex-row flex-wrap justify-center gap-3">
+          <a
+            href="#contact"
+            className="btn btn-primary btn-touch px-8 py-3 text-base font-semibold btn-section inline-flex items-center justify-center gap-2 group w-[calc(100%-6.5rem)] sm:w-auto mx-auto"
+            onClick={(event) => {
+              event.preventDefault();
+              document.getElementById("contact")?.scrollIntoView({ behavior: "smooth", block: "start" });
+            }}
+          >
+            Let&apos;s work together
+            <FontAwesomeIcon
+              icon={faArrowRight}
+              className="transition-transform group-hover:translate-x-1"
+            />
+          </a>
+          <a
+            href={`mailto:${profile.email}`}
+            className="btn bg-white/10 border border-edo-cream/30 text-edo-cream hover:bg-edo-gold hover:text-edo-charcoal hover:border-edo-gold btn-touch px-8 py-3 w-[calc(100%-6.5rem)] sm:w-auto mx-auto"
+          >
+            Email me
+          </a>
+          <a
+            href={profile.social.find((item) => item.name === "LinkedIn")?.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn bg-transparent border border-edo-gold/60 text-edo-gold hover:bg-edo-gold hover:text-edo-charcoal btn-touch px-8 py-3 w-[calc(100%-6.5rem)] sm:w-auto mx-auto"
+          >
+            LinkedIn
+          </a>
+        </div>
       </AnimateOnScroll>
     </div>
   );

@@ -10,7 +10,7 @@ import AnimateOnScroll from "../common/animate/AnimateOnScroll";
 import { profile } from "../../data/profile";
 
 const iconMap = {
-  Address: faLocationDot,
+  "Based in": faLocationDot,
   "My Email": faEnvelope,
   "Call / WhatsApp": faPhone,
 };

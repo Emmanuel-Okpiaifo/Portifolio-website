@@ -2,7 +2,7 @@ import AnimateOnScroll from "../common/animate/AnimateOnScroll";
 import { profile } from "../../data/profile";
 
 const Experience = () => {
-  const { experience } = profile;
+  const { experience, education } = profile;
 
   return (
     <section className="section-shell bg-white" id="experience">
@@ -38,7 +38,8 @@ const Experience = () => {
                   <p className="text-sm text-stone-500 md:shrink-0">{job.dates}</p>
                 </div>
                 <p className="mt-1 text-sm font-medium text-edo-gold">
-                  {job.company} — {job.location}
+                  {job.company}
+                  {job.location ? `, ${job.location}` : ""}
                 </p>
                 <ul className="mt-3 list-disc ps-5 text-sm text-stone-600 space-y-2 leading-relaxed">
                   {job.bullets.map((bullet) => (
@@ -48,6 +49,19 @@ const Experience = () => {
               </AnimateOnScroll>
             ))}
           </ol>
+        </div>
+
+        <div className="max-w-3xl mx-auto mt-16">
+          <h2 className="font-display text-2xl sm:text-3xl font-semibold text-edo-charcoal">{education.sectionTitle}</h2>
+          <ul className="mt-6 flex flex-col gap-4">
+            {education.items.map((item) => (
+              <li key={item.id} className="rounded-2xl bg-edo-stone/50 border border-stone-100 p-6">
+                <p className="font-display text-lg font-semibold text-edo-charcoal">{item.qualification}</p>
+                <p className="mt-1 text-sm font-medium text-edo-gold">{item.school}</p>
+                <p className="mt-1 text-sm text-stone-600">{item.detail}</p>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </section>

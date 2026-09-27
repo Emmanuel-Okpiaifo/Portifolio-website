@@ -75,9 +75,17 @@ const Testimonials = () => {
         )}
 
         {!loading && error && (
-          <p className="text-center text-red-700" role="alert">
-            {error}
-          </p>
+          <div className="text-center">
+            <p className="text-red-700" role="alert">
+              {error}
+            </p>
+            <Link
+              to="/leave-a-testimonial"
+              className="btn bg-white border border-stone-300 hover:border-edo-gold hover:text-edo-gold btn-touch px-6 py-3 mt-6 w-[calc(100%-6.5rem)] sm:w-auto relative z-40"
+            >
+              Leave a testimonial
+            </Link>
+          </div>
         )}
 
         {!loading && !error && items.length === 0 && (
@@ -85,11 +93,11 @@ const Testimonials = () => {
             <div className="rounded-2xl border border-stone-200 bg-edo-stone/60 px-5 py-8 sm:px-6 sm:py-10">
               <p className="font-display text-2xl text-edo-charcoal text-balance">No testimonials yet.</p>
               <p className="mt-3 text-stone-600 text-balance">
-                If we have worked together, I would love to hear how it went.
+                If we have worked together, tell me what we worked on and what Emmanuel did that made a difference.
               </p>
               <Link
                 to="/leave-a-testimonial"
-                className="btn btn-primary btn-touch mt-6 px-6 py-3 btn-section w-full sm:w-auto"
+                className="btn btn-primary btn-touch mt-6 px-6 py-3 btn-section w-[calc(100%-6.5rem)] sm:w-auto"
               >
                 Share a testimonial
               </Link>
@@ -110,15 +118,26 @@ const Testimonials = () => {
                       {item.message}
                     </p>
                     <div className="mt-5 flex items-center gap-3 min-w-0">
-                      <img
-                        src={item.photo}
-                        alt={`${item.firstName} ${item.lastName}`}
-                        className="h-12 w-12 shrink-0 rounded-full object-cover border-2 border-edo-gold/50"
-                      />
+                      {item.photo ? (
+                        <img
+                          src={item.photo}
+                          alt=""
+                          className="h-12 w-12 shrink-0 rounded-full object-cover border-2 border-edo-gold/50"
+                        />
+                      ) : (
+                        <span className="h-12 w-12 shrink-0 rounded-full border-2 border-edo-gold/50 bg-edo-sage text-edo-charcoal text-sm font-semibold inline-flex items-center justify-center" aria-hidden="true">
+                          {(item.firstName?.[0] || "").toUpperCase()}{(item.lastName?.[0] || "").toUpperCase()}
+                        </span>
+                      )}
                       <div className="min-w-0">
                         <p className="font-semibold text-edo-charcoal break-words">
                           {item.firstName} {item.lastName}
                         </p>
+                        {(item.role || item.company) && (
+                          <p className="text-xs text-stone-600 break-words">
+                            {[item.role, item.company].filter(Boolean).join(", ")}
+                          </p>
+                        )}
                         <p className="text-xs text-stone-500">{formatDate(item.createdAt)}</p>
                       </div>
                     </div>
@@ -129,7 +148,7 @@ const Testimonials = () => {
             <div className="text-center mt-8 sm:mt-10 px-1">
               <Link
                 to="/leave-a-testimonial"
-                className="btn bg-white border border-stone-300 hover:border-edo-gold hover:text-edo-gold btn-touch px-6 py-3 w-full sm:w-auto"
+                className="btn bg-white border border-stone-300 hover:border-edo-gold hover:text-edo-gold btn-touch px-6 py-3 w-[calc(100%-6.5rem)] sm:w-auto relative z-40"
               >
                 Leave a testimonial
               </Link>
