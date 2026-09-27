@@ -1,4 +1,4 @@
-import resumePdf from "../../assets/Emmanuel_Okpiaifo-Resume.pdf";
+import resumePdf from "../../assets/Emmanuel-Okpiaifo-CV.pdf";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDownload } from "@fortawesome/free-solid-svg-icons";
 import SocialMedia from "../common/socialMedia/SocialMedia";
@@ -39,9 +39,7 @@ const Profile = () => {
           <a
             className="btn bg-white border border-stone-300 hover:border-edo-gold hover:text-edo-gold btn-touch px-6 py-3 btn-section w-full sm:w-auto"
             href={resumePdf}
-            target="_blank"
-            rel="noopener noreferrer"
-            download
+            download="Emmanuel-Okpiaifo-CV.pdf"
           >
             <FontAwesomeIcon icon={faDownload} /> Download CV
           </a>

@@ -57,17 +57,36 @@ const toCard = (row) => ({
   consent: row.consent === true,
 });
 
-export const loadApprovedTestimonials = async () => {
-  if (!isSupabaseConfigured()) return [];
-  const supabase = requireClient();
-  const { data, error } = await supabase
-    .from("testimonials_public")
-    .select("id, first_name, last_name, message, photo_path, status, sort_order, created_at, role, company, relationship, linkedin_url")
+const BASE_COLUMNS = "id, first_name, last_name, message, photo_path, status, created_at";
+const PUBLIC_COLUMNS = `${BASE_COLUMNS}, sort_order, role, company, relationship, linkedin_url`;
+const REVIEW_COLUMNS = `${PUBLIC_COLUMNS}, email, consent`;
+
+const missingColumn = (error) =>
+  /does not exist|schema cache|testimonials_public|could not find/i.test(error?.message || "");
+
+const loadTestimonialRows = async (supabase, { approvedOnly }) => {
+  const columns = approvedOnly ? PUBLIC_COLUMNS : REVIEW_COLUMNS;
+  let request = supabase.from("testimonials").select(columns);
+  if (approvedOnly) request = request.eq("status", "approved");
+  let { data, error } = await request
     .order("sort_order", { ascending: true })
     .order("created_at", { ascending: true });
 
+  if (error && missingColumn(error)) {
+    let fallback = supabase.from("testimonials").select(BASE_COLUMNS);
+    if (approvedOnly) fallback = fallback.eq("status", "approved");
+    const second = await fallback.order("created_at", { ascending: true });
+    data = second.data;
+    error = second.error;
+  }
+
   if (error) throw new Error(friendlyError(error, "Testimonials could not be loaded."));
   return (data ?? []).map(toCard);
+};
+
+export const loadApprovedTestimonials = async () => {
+  if (!isSupabaseConfigured()) return [];
+  return loadTestimonialRows(requireClient(), { approvedOnly: true });
 };
 
 const RELATIONSHIPS = new Set(["Colleague", "Manager", "Client", "Mentee", "Other"]);
@@ -141,17 +160,7 @@ export const submitTestimonial = async ({
   }
 };
 
-export const loadReviewTestimonials = async () => {
-  const supabase = requireClient();
-  const { data, error } = await supabase
-    .from("testimonials")
-    .select("id, first_name, last_name, message, photo_path, status, sort_order, created_at, role, company, relationship, linkedin_url, email, consent")
-    .order("sort_order", { ascending: true })
-    .order("created_at", { ascending: true });
-
-  if (error) throw new Error(friendlyError(error, "Testimonials could not be loaded."));
-  return (data ?? []).map(toCard);
-};
+export const loadReviewTestimonials = async () => loadTestimonialRows(requireClient(), { approvedOnly: false });
 
 export const setTestimonialStatus = async (id, status) => {
   const supabase = requireClient();

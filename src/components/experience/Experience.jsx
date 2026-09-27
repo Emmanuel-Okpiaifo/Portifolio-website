@@ -38,8 +38,7 @@ const Experience = () => {
                   <p className="text-sm text-stone-500 md:shrink-0">{job.dates}</p>
                 </div>
                 <p className="mt-1 text-sm font-medium text-edo-gold">
-                  {job.company}
-                  {job.location ? `, ${job.location}` : ""}
+                  {job.company}{job.location ? `, ${job.location}` : ""}
                 </p>
                 <ul className="mt-3 list-disc ps-5 text-sm text-stone-600 space-y-2 leading-relaxed">
                   {job.bullets.map((bullet) => (

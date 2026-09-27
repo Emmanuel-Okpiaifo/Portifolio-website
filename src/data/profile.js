@@ -129,18 +129,6 @@ export const profile = {
     items: [
       {
         id: 1,
-        title: "Human Resources Manager",
-        company: "AfriVate Technologies Ltd",
-        location: "Remote, Part-time",
-        dates: "Jun 2026 to Present",
-        bullets: [
-          "Run people operations for a team of 12 across 4 teams.",
-          "Ran end to end hiring from 130+ applicants to 5 new contributors across 3 teams.",
-          "Set up the company Slack workspace, led the production of 20+ HR policies, templates and tools, and designed a performance appraisal framework whose first cycle launches in October 2026.",
-        ],
-      },
-      {
-        id: 2,
         title: "Technology Associate",
         company: "NerdzFactory Company",
         location: "Lagos, Nigeria",
@@ -150,6 +138,18 @@ export const profile = {
           "Own uptime, SEO, and feature delivery across corporate web platforms (nerdzfactory.co, nerdzfactory.org), maintaining 98%+ monthly uptime.",
           "Provide technical support across internal systems, acknowledging issues within 1 hour and resolving 80%+ within 24 hours.",
           "Built the Talentry waitlist landing page (waitlist.talentry.com.ng) and configured the DesignU LMS (designu.io/courses), supporting a GIZ/LSETF-partnered training program.",
+        ],
+      },
+      {
+        id: 2,
+        title: "Human Resources Manager",
+        company: "AfriVate Technologies Ltd",
+        location: "Remote, Part-time",
+        dates: "Jun 2026 to Present",
+        bullets: [
+          "Run people operations for a team of 12 across 4 teams.",
+          "Ran end to end hiring from 130+ applicants to 5 new contributors across 3 teams.",
+          "Set up the company Slack workspace, led the production of 20+ HR policies, templates and tools, and designed a performance appraisal framework whose first cycle launches in October 2026.",
         ],
       },
       {

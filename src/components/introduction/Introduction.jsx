@@ -1,5 +1,5 @@
 import profileImage from "../../assets/Emmanuel-hero.png";
-import resumePdf from "../../assets/Emmanuel_Okpiaifo-Resume.pdf";
+import resumePdf from "../../assets/Emmanuel-Okpiaifo-CV.pdf";
 import { faDownload } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Logo from "../common/logo/Logo";
@@ -70,7 +70,7 @@ const Introduction = () => {
           <a
             className="btn bg-white/10 border border-edo-cream/30 text-edo-cream hover:bg-edo-gold hover:text-edo-charcoal hover:border-edo-gold btn-touch btn-md sm:btn-lg px-6 sm:px-8 w-full sm:w-auto"
             href={resumePdf}
-            download
+            download="Emmanuel-Okpiaifo-CV.pdf"
           >
             <FontAwesomeIcon icon={faDownload} /> Download CV
           </a>
