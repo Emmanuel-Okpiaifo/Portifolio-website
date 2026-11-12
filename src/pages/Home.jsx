@@ -13,7 +13,7 @@ const Home = () => {
   return (
     <div className="relative overflow-x-hidden">
       {/* Hero + About */}
-      <div className="hero-shell">
+      <div className="hero-shell pt-16">
         <div className="content px-4 sm:px-6">
           <Introduction />
         </div>

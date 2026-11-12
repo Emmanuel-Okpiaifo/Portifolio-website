@@ -81,7 +81,7 @@ const Testimonials = () => {
             </p>
             <Link
               to="/leave-a-testimonial"
-              className="btn bg-white border border-stone-300 hover:border-edo-gold hover:text-edo-gold btn-touch px-6 py-3 mt-6 w-[calc(100%-6.5rem)] sm:w-auto relative z-40"
+              className="btn bg-white border border-stone-300 hover:border-edo-gold hover:text-edo-gold btn-touch px-6 py-3 mt-6 w-full sm:w-auto relative z-40"
             >
               Leave a testimonial
             </Link>
@@ -97,7 +97,7 @@ const Testimonials = () => {
               </p>
               <Link
                 to="/leave-a-testimonial"
-                className="btn btn-primary btn-touch mt-6 px-6 py-3 btn-section w-[calc(100%-6.5rem)] sm:w-auto"
+                className="btn btn-primary btn-touch mt-6 px-6 py-3 btn-section w-full sm:w-auto"
               >
                 Share a testimonial
               </Link>
@@ -148,7 +148,7 @@ const Testimonials = () => {
             <div className="text-center mt-8 sm:mt-10 px-1">
               <Link
                 to="/leave-a-testimonial"
-                className="btn bg-white border border-stone-300 hover:border-edo-gold hover:text-edo-gold btn-touch px-6 py-3 w-[calc(100%-6.5rem)] sm:w-auto relative z-40"
+                className="btn bg-white border border-stone-300 hover:border-edo-gold hover:text-edo-gold btn-touch px-6 py-3 w-full sm:w-auto relative z-40"
               >
                 Leave a testimonial
               </Link>

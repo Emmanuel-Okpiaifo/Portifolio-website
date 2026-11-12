@@ -23,7 +23,7 @@ const Contact = () => {
   }));
 
   return (
-    <section className="content px-4 sm:px-6" id="contact">
+    <section className="content px-4 sm:px-6 relative z-40" id="contact">
       <AnimateOnScroll animation="scale-in">
         <div className="bg-white rounded-2xl border border-stone-200 shadow-xl p-4 sm:p-6 md:p-10 lg:p-14 min-w-0">
           <div className="grid lg:grid-cols-2 gap-8 sm:gap-10 lg:gap-16 min-w-0">

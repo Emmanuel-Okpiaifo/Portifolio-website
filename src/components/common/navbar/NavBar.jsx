@@ -91,7 +91,7 @@ const NavBar = () => {
 
   return (
     <header
-      className={`sticky top-0 z-50 animate-nav-in transition-all duration-300 ${
+      className={`fixed inset-x-0 top-0 z-50 animate-nav-in transition-all duration-300 ${
         solidBar
           ? "bg-white/95 backdrop-blur-md border-b border-stone-200 shadow-sm"
           : "bg-transparent"
@@ -166,7 +166,7 @@ const NavBar = () => {
 
       {menuVisible && (
         <div
-          className={`lg:hidden fixed inset-x-0 top-16 z-40 h-[calc(100dvh-4rem)] overflow-y-auto overscroll-contain bg-white/98 backdrop-blur-sm pb-[max(2rem,env(safe-area-inset-bottom))] ${
+          className={`lg:hidden fixed inset-x-0 top-16 z-40 h-[calc(100dvh-4rem)] overflow-y-auto overscroll-contain bg-white pb-[max(2rem,env(safe-area-inset-bottom))] ${
             menuClosing ? "animate-mobile-menu-panel-out" : "animate-mobile-menu-panel"
           }`}
         >

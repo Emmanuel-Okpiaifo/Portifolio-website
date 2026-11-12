@@ -3,6 +3,7 @@ import Loading from "../components/common/loading/Loading";
 import Notice from "../components/common/notice/Notice";
 import { compressProfileImage, submitTestimonial } from "../lib/testimonialsStore";
 import { isSupabaseConfigured } from "../lib/supabaseClient";
+import { profile } from "../data/profile";
 
 const INPUT_CLASS =
   "w-full min-w-0 max-w-full box-border border-0 border-b-2 border-stone-200 bg-transparent py-3 text-base text-edo-charcoal placeholder:text-stone-400 focus:border-edo-gold focus:outline-none transition-colors";
@@ -26,7 +27,7 @@ const LeaveTestimonial = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
     const previous = document.title;
-    document.title = "Leave a testimonial | Emmanuel (Daniel) Okpiaifo";
+    document.title = `Leave a testimonial | ${profile.name}`;
     return () => {
       document.title = previous;
     };
@@ -120,7 +121,7 @@ const LeaveTestimonial = () => {
   };
 
   return (
-    <section className="section-shell bg-edo-stone min-h-[70vh]">
+    <section className="section-shell bg-edo-stone min-h-[70vh] relative z-40">
       <div className="content px-4 sm:px-6">
         <div className="max-w-2xl mx-auto bg-white rounded-2xl border border-stone-200 shadow-xl p-5 sm:p-10 min-w-0">
           <p className="section-eyebrow">Testimonials</p>

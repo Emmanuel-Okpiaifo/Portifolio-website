@@ -2,7 +2,7 @@ import AnimateOnScroll from "../common/animate/AnimateOnScroll";
 import { profile } from "../../data/profile";
 
 const Experience = () => {
-  const { experience, education } = profile;
+  const { experience, education, programmeSupport, certifications } = profile;
 
   return (
     <section className="section-shell bg-white" id="experience">
@@ -50,13 +50,38 @@ const Experience = () => {
           </ol>
         </div>
 
-        <div className="max-w-3xl mx-auto mt-16">
+        <div className="max-w-3xl mx-auto mt-16" id="programme-support">
+          <h2 className="font-display text-2xl sm:text-3xl font-semibold text-edo-charcoal">{programmeSupport.sectionTitle}</h2>
+          <p className="mt-3 text-stone-600 leading-relaxed">{programmeSupport.intro}</p>
+          <ul className="mt-6 flex flex-col gap-4">
+            {programmeSupport.items.map((item) => (
+              <li key={item.id} className="rounded-2xl bg-edo-stone/50 border border-stone-100 p-6">
+                <p className="font-display text-lg font-semibold text-edo-charcoal">{item.title}</p>
+                <p className="mt-2 text-sm text-stone-600 leading-relaxed">{item.description}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="max-w-3xl mx-auto mt-16" id="education">
           <h2 className="font-display text-2xl sm:text-3xl font-semibold text-edo-charcoal">{education.sectionTitle}</h2>
           <ul className="mt-6 flex flex-col gap-4">
             {education.items.map((item) => (
               <li key={item.id} className="rounded-2xl bg-edo-stone/50 border border-stone-100 p-6">
                 <p className="font-display text-lg font-semibold text-edo-charcoal">{item.qualification}</p>
                 <p className="mt-1 text-sm font-medium text-edo-gold">{item.school}</p>
+                <p className="mt-1 text-sm text-stone-600">{item.detail}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="max-w-3xl mx-auto mt-16" id="certifications">
+          <h2 className="font-display text-2xl sm:text-3xl font-semibold text-edo-charcoal">{certifications.sectionTitle}</h2>
+          <ul className="mt-6 flex flex-col gap-4">
+            {certifications.items.map((item) => (
+              <li key={item.id} className="rounded-2xl bg-edo-stone/50 border border-stone-100 p-6">
+                <p className="font-display text-lg font-semibold text-edo-charcoal">{item.title}</p>
                 <p className="mt-1 text-sm text-stone-600">{item.detail}</p>
               </li>
             ))}

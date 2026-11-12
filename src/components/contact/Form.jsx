@@ -37,8 +37,10 @@ const Form = () => {
     <div className="w-full min-w-0 max-w-full">
       <p className="text-stone-600 text-sm sm:text-base leading-relaxed break-words">
         Fill out the form below. It will open your email app with a message addressed to{" "}
-        <a href={`mailto:${recipient}`} className="text-edo-gold font-medium hover:underline break-all">
-          {recipient}
+        <a href={`mailto:${recipient}`} className="text-edo-gold font-medium hover:underline">
+          {recipient.slice(0, recipient.indexOf("@") + 1)}
+          <wbr />
+          {recipient.slice(recipient.indexOf("@") + 1)}
         </a>
         .
       </p>
@@ -62,7 +64,7 @@ const Form = () => {
         />
         <button
           type="submit"
-          className="btn btn-primary btn-touch btn-section w-[calc(100%-6.5rem)] sm:w-auto sm:self-start mt-1"
+          className="btn btn-primary btn-touch btn-section w-full sm:w-auto sm:self-start mt-1"
         >
           Send Message
         </button>

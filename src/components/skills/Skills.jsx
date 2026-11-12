@@ -1,6 +1,28 @@
 import AnimateOnScroll from "../common/animate/AnimateOnScroll";
 import { profile } from "../../data/profile";
 
+const SkillPill = ({ item }) => {
+  const splitAt = item.indexOf(" / ");
+  const shared =
+    "max-w-full bg-white text-stone-700 border border-stone-200 px-3 py-1.5 text-xs leading-snug @[24rem]:text-sm @[24rem]:leading-normal";
+
+  if (splitAt === -1) {
+    return <span className={`${shared} rounded-full`}>{item}</span>;
+  }
+
+  const lead = item.slice(0, splitAt);
+  const rest = item.slice(splitAt + 3);
+
+  return (
+    <span
+      className={`${shared} inline-flex w-fit flex-col items-start rounded-2xl @[20rem]:flex-row @[20rem]:items-center @[20rem]:rounded-full`}
+    >
+      <span>{lead} /</span>
+      <span className="@[20rem]:before:content-['_']">{rest}</span>
+    </span>
+  );
+};
+
 const Skills = () => {
   const { skills } = profile;
 
@@ -23,14 +45,9 @@ const Skills = () => {
               <h3 className="font-display text-lg font-semibold text-edo-charcoal mb-4">
                 {category.title}
               </h3>
-              <div className="flex flex-wrap gap-2">
+              <div className="@container flex flex-wrap gap-2">
                 {category.items.map((item) => (
-                  <span
-                    key={item}
-                    className="text-xs sm:text-sm px-3 py-1.5 bg-white text-stone-700 rounded-full border border-stone-200"
-                  >
-                    {item}
-                  </span>
+                  <SkillPill key={item} item={item} />
                 ))}
               </div>
             </AnimateOnScroll>

@@ -22,7 +22,15 @@ const Address = ({ item }) => {
       <div className="ms-3 min-w-0 flex-1">
         <p className="text-xs md:text-sm text-stone-500 font-normal">{item?.title}</p>
         <p className="text-sm md:text-base text-edo-charcoal font-medium break-words">
-          {item?.description}
+          {typeof item?.description === "string" && item.description.includes("@") && !item.description.includes(" ")
+            ? (
+              <>
+                {item.description.slice(0, item.description.indexOf("@") + 1)}
+                <wbr />
+                {item.description.slice(item.description.indexOf("@") + 1)}
+              </>
+            )
+            : item?.description}
         </p>
         {isPhone && (
           <a

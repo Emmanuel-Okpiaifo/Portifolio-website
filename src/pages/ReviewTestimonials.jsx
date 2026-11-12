@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import Notice from "../components/common/notice/Notice";
 import { getSupabase, isSupabaseConfigured } from "../lib/supabaseClient";
+import { profile } from "../data/profile";
 import {
   deleteTestimonial,
   loadReviewTestimonials,
@@ -42,7 +43,7 @@ const ReviewTestimonials = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
     const previous = document.title;
-    document.title = "Review testimonials | Emmanuel (Daniel) Okpiaifo";
+    document.title = `Review testimonials | ${profile.name}`;
     let robots = document.querySelector('meta[name="robots"]');
     const createdRobots = !robots;
     if (!robots) {
@@ -164,7 +165,7 @@ const ReviewTestimonials = () => {
   };
 
   return (
-    <section className="section-shell bg-edo-stone min-h-[70vh]">
+    <section className="section-shell bg-edo-stone min-h-[70vh] relative z-40">
       <div className="content px-4 sm:px-6">
         <div className="max-w-3xl mx-auto min-w-0">
           <p className="section-eyebrow">Private</p>

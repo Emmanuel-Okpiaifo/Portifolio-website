@@ -3,7 +3,7 @@ import { faDownload } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Logo from "../common/logo/Logo";
 import InformationSummary from "./InformationSummary";
-import { profile } from "../../data/profile";
+import { profile, resumeFile } from "../../data/profile";
 
 const Introduction = () => {
   const { intro, stats, brand } = profile;
@@ -50,6 +50,9 @@ const Introduction = () => {
             {intro.headline}
           </span>
         </h1>
+        <p className="text-edo-cream/80 text-sm sm:text-base mt-3 max-w-xl mx-auto lg:mx-0 leading-relaxed animate-hero-line animate-hero-line-4">
+          {profile.tagline}
+        </p>
 
         <p className="text-edo-cream/85 text-sm sm:text-base md:text-lg mt-4 sm:mt-6 max-w-xl mx-auto lg:mx-0 leading-relaxed animate-hero-line animate-hero-line-4 px-1 sm:px-0">
           {bioParts.a}
@@ -68,10 +71,10 @@ const Introduction = () => {
           </a>
           <a
             className="btn bg-white/10 border border-edo-cream/30 text-edo-cream hover:bg-edo-gold hover:text-edo-charcoal hover:border-edo-gold btn-touch btn-md sm:btn-lg px-6 sm:px-8 w-full sm:w-auto"
-            href="/Emmanuel-Okpiaifo-CV.pdf?v=two-column"
-            download="Emmanuel-Okpiaifo-CV.pdf"
+            href={resumeFile.href}
+            download={resumeFile.download}
           >
-            <FontAwesomeIcon icon={faDownload} /> Download CV
+            <FontAwesomeIcon icon={faDownload} /> Download Resume
           </a>
           <a
             className="btn bg-transparent border border-edo-gold/50 text-edo-gold hover:bg-edo-gold hover:text-edo-charcoal btn-touch btn-md sm:btn-lg px-6 sm:px-8 w-full sm:w-auto"

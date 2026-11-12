@@ -1,20 +1,10 @@
 import Projects from "./Projects";
 import AnimateOnScroll from "../common/animate/AnimateOnScroll";
 import bizgrowthAfrica from "../../assets/images/portfolio-images/bizgrowth-africa.png";
-import ddmLagos2026 from "../../assets/images/portfolio-images/ddm-lagos-2026.png";
-import designuLms from "../../assets/images/portfolio-images/designu-lms.png";
-import talentryWaitlist from "../../assets/images/portfolio-images/talentry-waitlist.png";
-import ysec from "../../assets/images/portfolio-images/ysec.png";
-import experienceAiLogo from "../../assets/images/portfolio-images/experience-ai.png";
 import { profile } from "../../data/profile";
 
 const localImages = {
   bizgrowthAfrica,
-  ddmLagos2026,
-  designuLms,
-  talentryWaitlist,
-  ysec,
-  experienceAi: experienceAiLogo,
 };
 
 const Portfolio = () => {
@@ -33,9 +23,14 @@ const Portfolio = () => {
           <p className="section-subtitle">{portfolio.sectionSubtitle}</p>
         </AnimateOnScroll>
 
-        <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-8">
+        <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-8 items-start">
           {projectData.map((data, index) => (
-            <AnimateOnScroll key={data.id} animation="fade-up" delay={index * 90}>
+            <AnimateOnScroll
+              key={data.id}
+              animation="fade-up"
+              delay={index * 90}
+              className={data.id === 7 ? "md:order-1 xl:order-none" : ""}
+            >
               <Projects data={data} />
             </AnimateOnScroll>
           ))}

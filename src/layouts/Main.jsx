@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import NavBar from "../components/common/navbar/NavBar";
 import Footer from "../components/common/footer/Footer";
 import ScrollToTop from "../components/common/scrollToTop/ScrollToTop";
@@ -11,6 +11,7 @@ const LOADER_FADE_MS = 500;
 const Main = () => {
   // "visible" → "fading" → "hidden"; site renders underneath the overlay
   const [loaderPhase, setLoaderPhase] = useState("visible");
+  const { pathname } = useLocation();
 
   useEffect(() => {
     const fadeTimer = setTimeout(() => setLoaderPhase("fading"), LOADER_VISIBLE_MS);
@@ -28,7 +29,9 @@ const Main = () => {
     <div data-theme={"light"} className="relative overflow-x-hidden min-w-0">
       {loaderPhase !== "hidden" && <Loading fading={loaderPhase === "fading"} />}
       <NavBar />
-      <Outlet />
+      <div className={pathname === "/" ? undefined : "pt-16"}>
+        <Outlet />
+      </div>
       <Footer />
       <ScrollToTop />
     </div>

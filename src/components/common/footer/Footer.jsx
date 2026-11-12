@@ -16,7 +16,7 @@ const Footer = () => {
 
   return (
     <footer className="bg-edo-charcoal text-edo-cream">
-      <div className="content px-4 sm:px-6 pt-16 pb-10">
+      <div className="content px-4 sm:px-6 pt-16 pb-24 sm:pb-10">
         <div className="flex flex-col md:flex-row justify-between items-center gap-6 sm:gap-8 text-center md:text-left">
           <Link to="/#introduction" className="flex items-center gap-3 sm:gap-3.5 max-w-full">
             <Logo badge className="h-12 w-12 sm:h-14 sm:w-14 md:h-16 md:w-16 shrink-0" />

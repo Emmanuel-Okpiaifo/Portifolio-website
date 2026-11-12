@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDownload } from "@fortawesome/free-solid-svg-icons";
 import SocialMedia from "../common/socialMedia/SocialMedia";
 import AnimateOnScroll from "../common/animate/AnimateOnScroll";
-import { profile } from "../../data/profile";
+import { profile, resumeFile } from "../../data/profile";
 
 const Profile = () => {
   const { about } = profile;
@@ -37,10 +37,10 @@ const Profile = () => {
           </a>
           <a
             className="btn bg-white border border-stone-300 hover:border-edo-gold hover:text-edo-gold btn-touch px-6 py-3 btn-section w-full sm:w-auto"
-            href="/Emmanuel-Okpiaifo-CV.pdf?v=two-column"
-            download="Emmanuel-Okpiaifo-CV.pdf"
+            href={resumeFile.href}
+            download={resumeFile.download}
           >
-            <FontAwesomeIcon icon={faDownload} /> Download CV
+            <FontAwesomeIcon icon={faDownload} /> Download Resume
           </a>
         </AnimateOnScroll>
         <AnimateOnScroll animation="fade-up" delay={280} className="mt-8 flex justify-center">
