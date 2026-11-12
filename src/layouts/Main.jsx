@@ -27,9 +27,12 @@ const Main = () => {
 
   return (
     <div data-theme={"light"} className="relative overflow-x-hidden min-w-0">
+      <a href="#main-content" className="skip-link">
+        Skip to content
+      </a>
       {loaderPhase !== "hidden" && <Loading fading={loaderPhase === "fading"} />}
       <NavBar />
-      <div className={pathname === "/" ? undefined : "pt-16"}>
+      <div id="main-content" tabIndex={-1} className={pathname === "/" ? "outline-none" : "pt-16 outline-none"}>
         <Outlet />
       </div>
       <Footer />

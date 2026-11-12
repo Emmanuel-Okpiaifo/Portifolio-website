@@ -30,7 +30,7 @@ export const profile = {
 
   stats: [
     { id: 1, title: "Experience", description: "2+ years" },
-    { id: 2, title: "Key Projects", description: "8" },
+    { id: 2, title: "Key Projects", description: "9" },
     { id: 3, title: "Partners", description: "12" },
   ],
 

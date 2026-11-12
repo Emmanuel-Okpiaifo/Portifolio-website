@@ -62,28 +62,40 @@ const Introduction = () => {
           {bioParts.c}
         </p>
 
-        <div className="mt-6 sm:mt-8 animate-hero-line animate-hero-line-5 flex flex-col sm:flex-row flex-wrap gap-3 w-full min-w-0 max-w-sm mx-auto lg:mx-0 lg:max-w-none">
-          <a
-            className="btn btn-primary btn-touch btn-md sm:btn-lg px-6 sm:px-8 btn-section w-full sm:w-auto"
-            href={`mailto:${intro.ctaEmail}`}
-          >
-            Say Hello
-          </a>
-          <a
-            className="btn bg-white/10 border border-edo-cream/30 text-edo-cream hover:bg-edo-gold hover:text-edo-charcoal hover:border-edo-gold btn-touch btn-md sm:btn-lg px-6 sm:px-8 w-full sm:w-auto"
-            href={resumeFile.href}
-            download={resumeFile.download}
-          >
-            <FontAwesomeIcon icon={faDownload} /> Download Resume
-          </a>
-          <a
-            className="btn bg-transparent border border-edo-gold/50 text-edo-gold hover:bg-edo-gold hover:text-edo-charcoal btn-touch btn-md sm:btn-lg px-6 sm:px-8 w-full sm:w-auto"
-            href={profile.social.find((item) => item.name === "LinkedIn")?.url}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            LinkedIn
-          </a>
+        <div className="mt-6 sm:mt-8 animate-hero-line animate-hero-line-5 flex flex-col gap-3 w-full min-w-0 max-w-xl mx-auto lg:mx-0">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <a
+              className="btn btn-primary btn-touch btn-md sm:btn-lg px-6 sm:px-8 btn-section w-full"
+              href={`mailto:${intro.ctaEmail}`}
+            >
+              Say Hello
+            </a>
+            <a
+              className="btn bg-white/10 border border-edo-cream/30 text-edo-cream hover:bg-edo-gold hover:text-edo-charcoal hover:border-edo-gold btn-touch btn-md sm:btn-lg px-6 sm:px-8 w-full"
+              href={resumeFile.href}
+              download={resumeFile.download}
+            >
+              <FontAwesomeIcon icon={faDownload} /> Download Resume
+            </a>
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            <a
+              className="btn bg-transparent border border-edo-gold/50 text-edo-gold hover:bg-edo-gold hover:text-edo-charcoal btn-touch btn-md sm:btn-lg px-6 sm:px-8 w-full"
+              href={profile.social.find((item) => item.name === "LinkedIn")?.url}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              LinkedIn
+            </a>
+            <a
+              className="btn bg-transparent border border-edo-gold/50 text-edo-gold hover:bg-edo-gold hover:text-edo-charcoal btn-touch btn-md sm:btn-lg px-6 sm:px-8 w-full"
+              href={profile.social.find((item) => item.name === "GitHub")?.url}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              GitHub
+            </a>
+          </div>
         </div>
 
         <div className="grid grid-cols-3 gap-2 sm:gap-3 w-full max-w-sm sm:max-w-md mt-8 sm:mt-10 mx-auto lg:mx-0 min-w-0">

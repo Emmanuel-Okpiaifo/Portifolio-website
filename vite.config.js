@@ -13,6 +13,12 @@ export default defineConfig(({ mode }) => {
   return {
     base,
     plugins: [react(), tailwindcss()],
+    test: {
+      environment: "jsdom",
+      setupFiles: "./src/test/setup.js",
+      css: false,
+      testTimeout: 20000,
+    },
     server: {
       open: true,
       host: false,

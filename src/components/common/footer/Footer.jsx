@@ -8,7 +8,10 @@ const navItems = [
   { id: 2, name: "About", url: "profile" },
   { id: 3, name: "Experience", url: "experience" },
   { id: 4, name: "Portfolio", url: "portfolio" },
-  { id: 5, name: "Contact", url: "contact" },
+  { id: 5, name: "Skills", url: "skills" },
+  { id: 6, name: "Services", url: "services" },
+  { id: 7, name: "Testimonials", url: "testimonials" },
+  { id: 8, name: "Contact", url: "contact" },
 ];
 
 const Footer = () => {

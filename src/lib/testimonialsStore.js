@@ -1,8 +1,41 @@
-import { getSupabase, isSupabaseConfigured } from "./supabaseClient";
+export const TESTIMONIALS_SHEET_ID = "1gp6ye5d8zjqAIXkHqXMJlOXphTy-Rz9NAskGUU--4gU";
+export const TESTIMONIALS_SHEET_URL = `https://docs.google.com/spreadsheets/d/${TESTIMONIALS_SHEET_ID}/edit?gid=916104802#gid=916104802`;
 
-const BUCKET = "testimonial-photos";
+const SHEET_CSV_URL = `https://docs.google.com/spreadsheets/d/${TESTIMONIALS_SHEET_ID}/gviz/tq?tqx=out:csv&gid=916104802`;
+const SHEET_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbz-SsTMrsyrUBaRh-4dxOh4kibkshIuPDvx6H5yrEKBXPB2k54YB8hklCGqab8rpiQ4/exec";
+
 const MAX_NAME = 40;
 const MAX_MESSAGE = 600;
+const RELATIONSHIPS = new Set(["Colleague", "Manager", "Client", "Mentee", "Other"]);
+
+const SAVED_TESTIMONIALS = [
+  {
+    id: "adeola-ayanda-2026-10-25",
+    firstName: "Adeola",
+    lastName: "Ayanda",
+    message:
+      "Emmanuel thinks ahead and takes initiative without always needing to be asked. He is quick to identify potential problems and find creative, practical ways to solve them. He is reliable, resourceful, and always willing to step up when the team needs support. Working with him has shown me how much of a difference it makes to have someone who takes ownership of his work and is always looking for better ways to get things done.",
+    photo: "",
+    status: "approved",
+    sortOrder: 1,
+    createdAt: "2026-10-25T12:00:00",
+    role: "Brand, Marketing and Communications Lead",
+    company: "NerdzFactory Company Limited",
+  },
+  {
+    id: "eniola-oyewole-2026-10-27",
+    firstName: "Eniola",
+    lastName: "Oyewole",
+    message:
+      "Working with him on website projects has been a good experience. He is smart, creative, and always brings useful ideas to the table. I appreciate how he approaches his work and finds ways to make things better.",
+    photo: "",
+    status: "approved",
+    sortOrder: 2,
+    createdAt: "2026-10-27T12:00:00",
+    role: "Content and Editorial Supervisor",
+    company: "NerdzFactory Company",
+  },
+];
 
 const cleanText = (value, max) =>
   String(value ?? "")
@@ -11,85 +44,112 @@ const cleanText = (value, max) =>
     .trim()
     .slice(0, max);
 
-const requireClient = () => {
-  const supabase = getSupabase();
-  if (!supabase) {
-    throw new Error("Testimonials are not connected yet. Add the Supabase keys and try again.");
+const parseCsv = (text) => {
+  const rows = [];
+  let row = [];
+  let cell = "";
+  let quoted = false;
+  const source = String(text ?? "").replace(/^\uFEFF/, "");
+
+  for (let i = 0; i < source.length; i += 1) {
+    const char = source[i];
+    if (quoted) {
+      if (char === '"') {
+        if (source[i + 1] === '"') {
+          cell += '"';
+          i += 1;
+        } else {
+          quoted = false;
+        }
+      } else {
+        cell += char;
+      }
+      continue;
+    }
+    if (char === '"') {
+      quoted = true;
+    } else if (char === ",") {
+      row.push(cell);
+      cell = "";
+    } else if (char === "\n") {
+      row.push(cell);
+      rows.push(row);
+      row = [];
+      cell = "";
+    } else if (char !== "\r") {
+      cell += char;
+    }
   }
-  return supabase;
+
+  if (cell || row.length) {
+    row.push(cell);
+    rows.push(row);
+  }
+
+  return rows.filter((entry) => entry.some((value) => value.trim()));
 };
 
-const friendlyError = (error, fallback) => {
-  const message = error?.message || "";
-  if (/row-level security|permission|not authorized/i.test(message)) {
-    return "That action is not allowed.";
-  }
-  if (/payload too large|exceeded|file size/i.test(message)) {
-    return "That photo is larger than 2 MB after it is prepared. Choose a smaller one.";
-  }
-  if (/sort_order/i.test(message)) {
-    return "Run the updated supabase/setup-testimonials.sql once so the order can be saved.";
-  }
-  return fallback;
+const createdAtValue = (value) => {
+  const raw = String(value ?? "").trim();
+  if (/^\d{4}-\d{2}-\d{2}$/.test(raw)) return `${raw}T12:00:00`;
+  return raw;
 };
 
-export const photoUrl = (path) => {
-  const supabase = getSupabase();
-  if (!supabase || !path) return "";
-  return supabase.storage.from(BUCKET).getPublicUrl(path).data.publicUrl;
-};
-
-const toCard = (row) => ({
-  id: row.id,
-  firstName: row.first_name,
-  lastName: row.last_name,
-  message: row.message,
-  photo: photoUrl(row.photo_path),
-  photoPath: row.photo_path,
-  status: row.status,
-  sortOrder: row.sort_order ?? 0,
-  createdAt: row.created_at,
-  role: row.role || "",
-  company: row.company || "",
-  relationship: row.relationship || "",
-  linkedinUrl: row.linkedin_url || "",
-  email: row.email || "",
-  consent: row.consent === true,
-});
-
-const BASE_COLUMNS = "id, first_name, last_name, message, photo_path, status, created_at";
-const PUBLIC_COLUMNS = `${BASE_COLUMNS}, sort_order, role, company, relationship, linkedin_url`;
-const REVIEW_COLUMNS = `${PUBLIC_COLUMNS}, email, consent`;
-
-const missingColumn = (error) =>
-  /does not exist|schema cache|testimonials_public|could not find/i.test(error?.message || "");
-
-const loadTestimonialRows = async (supabase, { approvedOnly }) => {
-  const columns = approvedOnly ? PUBLIC_COLUMNS : REVIEW_COLUMNS;
-  let request = supabase.from("testimonials").select(columns);
-  if (approvedOnly) request = request.eq("status", "approved");
-  let { data, error } = await request
-    .order("sort_order", { ascending: true })
-    .order("created_at", { ascending: true });
-
-  if (error && missingColumn(error)) {
-    let fallback = supabase.from("testimonials").select(BASE_COLUMNS);
-    if (approvedOnly) fallback = fallback.eq("status", "approved");
-    const second = await fallback.order("created_at", { ascending: true });
-    data = second.data;
-    error = second.error;
+const rowsToCards = (text) => {
+  const table = parseCsv(text);
+  const headers = (table[0] ?? []).map((header) => header.trim().toLowerCase());
+  if (!headers.includes("status") || !headers.includes("message")) {
+    throw new Error("The testimonials sheet could not be read.");
   }
 
-  if (error) throw new Error(friendlyError(error, "Testimonials could not be loaded."));
-  return (data ?? []).map(toCard);
+  const indexOf = (name) => headers.indexOf(name);
+  const cell = (row, name) => row[indexOf(name)]?.trim() ?? "";
+
+  return table
+    .slice(1)
+    .map((row) => {
+      const firstName = cell(row, "first_name");
+      const lastName = cell(row, "last_name");
+      const createdAt = createdAtValue(cell(row, "created_at"));
+      const photo = cell(row, "photo_url");
+      return {
+        id: `${firstName}-${lastName}-${createdAt}`.toLowerCase().replace(/\s+/g, "-"),
+        firstName,
+        lastName,
+        message: cell(row, "message"),
+        photo: /^https:\/\//i.test(photo) ? photo : "",
+        status: cell(row, "status").toLowerCase(),
+        sortOrder: Number(cell(row, "sort_order")) || 0,
+        createdAt,
+        role: cell(row, "role"),
+        company: cell(row, "company"),
+      };
+    })
+    .filter((item) => item.status === "approved" && item.firstName && item.lastName && item.message)
+    .sort((a, b) => a.sortOrder - b.sortOrder || String(a.createdAt).localeCompare(String(b.createdAt)));
 };
 
 export const loadApprovedTestimonials = async () => {
-  if (!isSupabaseConfigured()) return [];
-  return loadTestimonialRows(requireClient(), { approvedOnly: true });
+  try {
+    const response = await fetch(SHEET_CSV_URL, { cache: "no-store" });
+    if (!response.ok) throw new Error("The testimonials sheet could not be read.");
+    const text = await response.text();
+    if (!text.trim()) return { items: SAVED_TESTIMONIALS, source: "empty" };
+    const items = rowsToCards(text);
+    return { items, source: "sheet" };
+  } catch {
+    return { items: SAVED_TESTIMONIALS, source: "saved" };
+  }
 };
 
-const RELATIONSHIPS = new Set(["Colleague", "Manager", "Client", "Mentee", "Other"]);
+const httpsUrl = (value, max) => {
+  const text = cleanText(value, max);
+  if (!text) return "";
+  if (!text.startsWith("https://")) {
+    throw new Error("Optional links need to start with https://.");
+  }
+  return text;
+};
 
 export const submitTestimonial = async ({
   firstName,
@@ -99,11 +159,9 @@ export const submitTestimonial = async ({
   company,
   relationship,
   linkedinUrl,
-  email,
+  photoUrl,
   consent,
-  photoBlob,
 }) => {
-  const supabase = requireClient();
   const entry = {
     firstName: cleanText(firstName, MAX_NAME),
     lastName: cleanText(lastName, MAX_NAME),
@@ -111,8 +169,8 @@ export const submitTestimonial = async ({
     role: cleanText(role, 80),
     company: cleanText(company, 80),
     relationship: cleanText(relationship, 40),
-    linkedinUrl: cleanText(linkedinUrl, 200),
-    email: cleanText(email, 120),
+    linkedinUrl: httpsUrl(linkedinUrl, 200),
+    photoUrl: httpsUrl(photoUrl, 300),
   };
 
   if (!entry.firstName || !entry.lastName || !entry.message || !entry.role || !entry.company || !RELATIONSHIPS.has(entry.relationship)) {
@@ -121,126 +179,11 @@ export const submitTestimonial = async ({
   if (!consent) {
     throw new Error("Consent is required before this note can be sent.");
   }
-  if (entry.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(entry.email)) {
-    throw new Error("That email address does not look valid.");
-  }
 
-  let photoPath = null;
-  if (photoBlob) {
-    if (photoBlob.size > 2 * 1024 * 1024) {
-      throw new Error("That photo is larger than 2 MB after it is prepared. Choose a smaller one.");
-    }
-    photoPath = `${crypto.randomUUID()}.jpg`;
-    const { error: uploadError } = await supabase.storage.from(BUCKET).upload(photoPath, photoBlob, {
-      contentType: "image/jpeg",
-      upsert: false,
-    });
-    if (uploadError) {
-      throw new Error(friendlyError(uploadError, "The profile photo could not be uploaded."));
-    }
-  }
-
-  const { error } = await supabase.from("testimonials").insert({
-    first_name: entry.firstName,
-    last_name: entry.lastName,
-    message: entry.message,
-    photo_path: photoPath,
-    status: "pending",
-    role: entry.role,
-    company: entry.company,
-    relationship: entry.relationship,
-    linkedin_url: entry.linkedinUrl || null,
-    email: entry.email || null,
-    consent: true,
+  await fetch(SHEET_WEBAPP_URL, {
+    method: "POST",
+    mode: "no-cors",
+    headers: { "Content-Type": "text/plain;charset=utf-8" },
+    body: JSON.stringify(entry),
   });
-
-  if (error) {
-    if (photoPath) await supabase.storage.from(BUCKET).remove([photoPath]);
-    throw new Error(friendlyError(error, "Your testimonial could not be sent."));
-  }
 };
-
-export const loadReviewTestimonials = async () => loadTestimonialRows(requireClient(), { approvedOnly: false });
-
-export const setTestimonialStatus = async (id, status) => {
-  const supabase = requireClient();
-  const { error } = await supabase.from("testimonials").update({ status }).eq("id", id);
-  if (error) throw new Error(friendlyError(error, "That testimonial could not be updated."));
-};
-
-export const saveTestimonialOrder = async (orderedIds) => {
-  const supabase = requireClient();
-  const results = await Promise.all(
-    orderedIds.map((id, index) =>
-      supabase.from("testimonials").update({ sort_order: index + 1 }).eq("id", id)
-    )
-  );
-  const failed = results.find((result) => result.error);
-  if (failed?.error) throw new Error(friendlyError(failed.error, "The order could not be saved."));
-};
-
-export const deleteTestimonial = async (id, photoPath) => {
-  const supabase = requireClient();
-  const { error } = await supabase.from("testimonials").delete().eq("id", id);
-  if (error) throw new Error(friendlyError(error, "That testimonial could not be removed."));
-  if (photoPath) await supabase.storage.from(BUCKET).remove([photoPath]);
-};
-
-export const compressProfileImage = (file) =>
-  new Promise((resolve, reject) => {
-    if (!file) {
-      reject(new Error("Add a profile photo."));
-      return;
-    }
-    if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
-      reject(new Error("Use a JPG, PNG, or WEBP photo."));
-      return;
-    }
-    if (file.size > 10 * 1024 * 1024) {
-      reject(new Error("That photo is too large to prepare. Choose one under 10 MB; it is saved at 2 MB or less."));
-      return;
-    }
-
-    const image = new Image();
-    const objectUrl = URL.createObjectURL(file);
-    image.onload = () => {
-      const maxEdge = 480;
-      const scale = Math.min(1, maxEdge / Math.max(image.width, image.height));
-      const canvas = document.createElement("canvas");
-      canvas.width = Math.max(1, Math.round(image.width * scale));
-      canvas.height = Math.max(1, Math.round(image.height * scale));
-      const context = canvas.getContext("2d");
-      if (!context) {
-        URL.revokeObjectURL(objectUrl);
-        reject(new Error("This photo could not be prepared. Try another one."));
-        return;
-      }
-      context.drawImage(image, 0, 0, canvas.width, canvas.height);
-      URL.revokeObjectURL(objectUrl);
-      const toJpeg = (quality, done) => {
-        canvas.toBlob((blob) => done(blob), "image/jpeg", quality);
-      };
-      toJpeg(0.82, (blob) => {
-        if (!blob) {
-          reject(new Error("This photo could not be prepared. Try another one."));
-          return;
-        }
-        if (blob.size <= 900 * 1024) {
-          resolve(blob);
-          return;
-        }
-        toJpeg(0.6, (smaller) => {
-          if (!smaller) {
-            reject(new Error("This photo could not be prepared. Try another one."));
-            return;
-          }
-          resolve(smaller);
-        });
-      });
-    };
-    image.onerror = () => {
-      URL.revokeObjectURL(objectUrl);
-      reject(new Error("This photo could not be opened. Try another one."));
-    };
-    image.src = objectUrl;
-  });

@@ -37,7 +37,7 @@ const Experience = () => {
                   </h3>
                   <p className="text-sm text-stone-500 md:shrink-0">{job.dates}</p>
                 </div>
-                <p className="mt-1 text-sm font-medium text-edo-gold">
+                <p className="mt-1 text-sm font-medium text-edo-gold-ink">
                   {job.company}{job.location ? `, ${job.location}` : ""}
                 </p>
                 <ul className="mt-3 list-disc ps-5 text-sm text-stone-600 space-y-2 leading-relaxed">
@@ -69,7 +69,7 @@ const Experience = () => {
             {education.items.map((item) => (
               <li key={item.id} className="rounded-2xl bg-edo-stone/50 border border-stone-100 p-6">
                 <p className="font-display text-lg font-semibold text-edo-charcoal">{item.qualification}</p>
-                <p className="mt-1 text-sm font-medium text-edo-gold">{item.school}</p>
+                <p className="mt-1 text-sm font-medium text-edo-gold-ink">{item.school}</p>
                 <p className="mt-1 text-sm text-stone-600">{item.detail}</p>
               </li>
             ))}

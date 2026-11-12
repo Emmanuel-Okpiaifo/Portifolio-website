@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import AnimateOnScroll from "../common/animate/AnimateOnScroll";
-import { isSupabaseConfigured } from "../../lib/supabaseClient";
 import { loadApprovedTestimonials } from "../../lib/testimonialsStore";
 
 const formatDate = (iso) => {
@@ -16,22 +15,17 @@ const formatDate = (iso) => {
 
 const Testimonials = () => {
   const [items, setItems] = useState([]);
-  const [loading, setLoading] = useState(isSupabaseConfigured());
-  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let active = true;
-    if (!isSupabaseConfigured()) {
-      setLoading(false);
-      return undefined;
-    }
 
     loadApprovedTestimonials()
       .then((next) => {
-        if (active) setItems(next);
+        if (active) setItems(next.source === "sheet" ? next.items : []);
       })
-      .catch((err) => {
-        if (active) setError(err instanceof Error ? err.message : "Testimonials could not be loaded.");
+      .catch(() => {
+        if (active) setItems([]);
       })
       .finally(() => {
         if (active) setLoading(false);
@@ -74,11 +68,9 @@ const Testimonials = () => {
           </p>
         )}
 
-        {!loading && error && (
+        {!loading && items.length === 0 && (
           <div className="text-center">
-            <p className="text-red-700" role="alert">
-              {error}
-            </p>
+            <p className="text-stone-600 text-balance">No testimonials to show yet.</p>
             <Link
               to="/leave-a-testimonial"
               className="btn bg-white border border-stone-300 hover:border-edo-gold hover:text-edo-gold btn-touch px-6 py-3 mt-6 w-full sm:w-auto relative z-40"
@@ -88,24 +80,7 @@ const Testimonials = () => {
           </div>
         )}
 
-        {!loading && !error && items.length === 0 && (
-          <AnimateOnScroll animation="fade-up" className="max-w-xl mx-auto text-center">
-            <div className="rounded-2xl border border-stone-200 bg-edo-stone/60 px-5 py-8 sm:px-6 sm:py-10">
-              <p className="font-display text-2xl text-edo-charcoal text-balance">No testimonials yet.</p>
-              <p className="mt-3 text-stone-600 text-balance">
-                If we have worked together, tell me what we worked on and what Emmanuel did that made a difference.
-              </p>
-              <Link
-                to="/leave-a-testimonial"
-                className="btn btn-primary btn-touch mt-6 px-6 py-3 btn-section w-full sm:w-auto"
-              >
-                Share a testimonial
-              </Link>
-            </div>
-          </AnimateOnScroll>
-        )}
-
-        {!loading && !error && items.length > 0 && (
+        {!loading && items.length > 0 && (
           <>
             <div className={`grid grid-cols-1 items-start gap-4 sm:gap-6 ${gridClass}`}>
               {items.map((item, index) => (

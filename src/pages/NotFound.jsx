@@ -29,7 +29,7 @@ export const RouteError = () => {
   return (
     <main className="min-h-screen bg-edo-stone flex items-center justify-center px-4 py-16">
       <div className="max-w-xl text-center">
-        <p className="text-edo-gold text-xs font-semibold uppercase tracking-[0.2em]">{profile.name}</p>
+        <p className="text-edo-gold-ink text-xs font-semibold uppercase tracking-[0.2em]">{profile.name}</p>
         <h1 className="mt-3 font-display text-3xl sm:text-4xl font-semibold text-edo-charcoal">This page could not be loaded</h1>
         <p className="mt-3 text-stone-600 break-words">{message}</p>
         <a href={homeHref} className="btn btn-primary btn-touch mt-8 w-full sm:w-auto">

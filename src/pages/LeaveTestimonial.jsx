@@ -1,8 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import Loading from "../components/common/loading/Loading";
 import Notice from "../components/common/notice/Notice";
-import { compressProfileImage, submitTestimonial } from "../lib/testimonialsStore";
-import { isSupabaseConfigured } from "../lib/supabaseClient";
+import { submitTestimonial } from "../lib/testimonialsStore";
 import { profile } from "../data/profile";
 
 const INPUT_CLASS =
@@ -16,10 +15,8 @@ const LeaveTestimonial = () => {
   const [company, setCompany] = useState("");
   const [relationship, setRelationship] = useState("");
   const [linkedinUrl, setLinkedinUrl] = useState("");
-  const [email, setEmail] = useState("");
+  const [photoUrl, setPhotoUrl] = useState("");
   const [consent, setConsent] = useState(false);
-  const [previewUrl, setPreviewUrl] = useState("");
-  const [photoBlob, setPhotoBlob] = useState(null);
   const [notice, setNotice] = useState(null);
   const [working, setWorking] = useState("");
   const closeNotice = useCallback(() => setNotice(null), []);
@@ -33,38 +30,6 @@ const LeaveTestimonial = () => {
     };
   }, []);
 
-  useEffect(() => () => {
-    if (previewUrl) URL.revokeObjectURL(previewUrl);
-  }, [previewUrl]);
-
-  const onPhoto = async (event) => {
-    const file = event.target.files?.[0];
-    setNotice(null);
-    if (previewUrl) URL.revokeObjectURL(previewUrl);
-    if (!file) {
-      setPreviewUrl("");
-      setPhotoBlob(null);
-      return;
-    }
-    if (file.size > 2 * 1024 * 1024) setWorking("Preparing your photo");
-    try {
-      const blob = await compressProfileImage(file);
-      setPhotoBlob(blob);
-      setPreviewUrl(URL.createObjectURL(blob));
-    } catch (err) {
-      setPreviewUrl("");
-      setPhotoBlob(null);
-      event.target.value = "";
-      setNotice({
-        tone: "error",
-        title: "Photo not added",
-        message: err instanceof Error ? err.message : "That photo could not be used.",
-      });
-    } finally {
-      setWorking("");
-    }
-  };
-
   const onSubmit = async (event) => {
     event.preventDefault();
     setNotice(null);
@@ -76,8 +41,7 @@ const LeaveTestimonial = () => {
       });
       return;
     }
-    const form = event.currentTarget;
-    setWorking(photoBlob ? "Uploading your photo" : "Sending your note");
+    setWorking("Saving your note");
     try {
       await submitTestimonial({
         firstName,
@@ -87,9 +51,8 @@ const LeaveTestimonial = () => {
         company,
         relationship,
         linkedinUrl,
-        email,
+        photoUrl,
         consent,
-        photoBlob,
       });
       setFirstName("");
       setLastName("");
@@ -98,16 +61,12 @@ const LeaveTestimonial = () => {
       setCompany("");
       setRelationship("");
       setLinkedinUrl("");
-      setEmail("");
+      setPhotoUrl("");
       setConsent(false);
-      setPhotoBlob(null);
-      if (previewUrl) URL.revokeObjectURL(previewUrl);
-      setPreviewUrl("");
-      form.reset();
       setNotice({
         tone: "success",
-        title: "Thank you",
-        message: "Your note was received. It will appear on the homepage after Emmanuel accepts it. Your email, if you left one, stays private.",
+        title: "Note saved",
+        message: "Emmanuel will publish it on the homepage after he accepts it. The site shows your initials unless you added a photo link.",
       });
     } catch (err) {
       setNotice({
@@ -129,14 +88,8 @@ const LeaveTestimonial = () => {
             Share your experience
           </h1>
           <p className="mt-3 text-stone-600 leading-relaxed">
-            What did we work on, and what did Emmanuel do that made a difference? Emmanuel reviews each note before it appears on the homepage. A photo is optional.
+            What did we work on, and what did Emmanuel do that made a difference? Your note is saved for review and appears on the homepage after Emmanuel accepts it. A photo link is optional; otherwise the site shows your initials.
           </p>
-
-          {!isSupabaseConfigured() && (
-            <p className="mt-6 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900" role="status">
-              This form is not connected to Supabase yet.
-            </p>
-          )}
 
           <form className="mt-8 flex flex-col gap-5" onSubmit={onSubmit}>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
@@ -211,32 +164,8 @@ const LeaveTestimonial = () => {
                 <input name="linkedinUrl" value={linkedinUrl} onChange={(e) => setLinkedinUrl(e.target.value)} maxLength={200} inputMode="url" className={INPUT_CLASS} placeholder="https://www.linkedin.com/in/..." />
               </label>
               <label className="block min-w-0">
-                <span className="text-xs font-semibold uppercase tracking-wider text-stone-500">Email <span className="normal-case tracking-normal text-stone-400">(optional, kept private)</span></span>
-                <input name="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} maxLength={120} autoComplete="email" className={INPUT_CLASS} placeholder="you@example.com" />
-              </label>
-            </div>
-
-            <div className="min-w-0">
-              <span className="text-xs font-semibold uppercase tracking-wider text-stone-500">Profile photo <span className="normal-case tracking-normal text-stone-400">(optional)</span></span>
-              <label className="mt-3 flex items-center gap-3 sm:gap-4 min-w-0 cursor-pointer">
-                {previewUrl ? (
-                  <img src={previewUrl} alt="" className="h-16 w-16 shrink-0 rounded-full object-cover border-2 border-edo-gold/50" />
-                ) : (
-                  <span className="h-16 w-16 shrink-0 rounded-full bg-edo-stone border border-dashed border-stone-300" />
-                )}
-                <span className="min-w-0">
-                  <span className="block text-sm font-medium text-edo-charcoal">
-                    {previewUrl ? "Change photo" : "Choose a photo"}
-                  </span>
-                  <span className="block text-xs text-stone-500 mt-0.5">JPG, PNG, or WEBP. Saved at 2 MB or less. An initials avatar is used if you skip this.</span>
-                  <input
-                    type="file"
-                    name="photo"
-                    accept="image/jpeg,image/png,image/webp"
-                    className="sr-only"
-                    onChange={onPhoto}
-                  />
-                </span>
+                <span className="text-xs font-semibold uppercase tracking-wider text-stone-500">Photo link <span className="normal-case tracking-normal text-stone-400">(optional)</span></span>
+                <input name="photoUrl" value={photoUrl} onChange={(e) => setPhotoUrl(e.target.value)} maxLength={300} inputMode="url" className={INPUT_CLASS} placeholder="https://..." />
               </label>
             </div>
 
@@ -254,7 +183,7 @@ const LeaveTestimonial = () => {
 
             <button
               type="submit"
-              disabled={Boolean(working) || !isSupabaseConfigured()}
+              disabled={Boolean(working)}
               className="btn btn-primary btn-touch btn-section w-full sm:w-auto sm:self-start mt-2"
             >
               Send testimonial

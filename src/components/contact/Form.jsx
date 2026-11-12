@@ -2,7 +2,9 @@ import { useState } from "react";
 import { profile } from "../../data/profile";
 
 const INPUT_CLASS =
-  "w-full min-w-0 max-w-full box-border border-0 border-b-2 border-stone-200 bg-transparent py-3 text-base text-edo-charcoal placeholder:text-stone-400 focus:border-edo-gold focus:outline-none transition-colors";
+  "w-full min-w-0 max-w-full box-border border-0 border-b-2 border-stone-200 bg-transparent py-3 text-base text-edo-charcoal placeholder:text-stone-600 focus:border-edo-gold focus:outline-none transition-colors";
+
+const LABEL_CLASS = "block text-xs font-semibold uppercase tracking-wider text-stone-600";
 
 const Form = () => {
   const [submitted, setSubmitted] = useState(false);
@@ -52,16 +54,29 @@ const Form = () => {
       )}
 
       <form className="flex flex-col gap-4 sm:gap-5 mt-6 w-full min-w-0 max-w-full" onSubmit={handleSubmit}>
-        <input type="text" name="name" placeholder="Name*" className={INPUT_CLASS} required />
-        <input type="email" name="email" placeholder="Your email*" className={INPUT_CLASS} required autoComplete="email" />
-        <input type="text" name="subject" placeholder="Subject*" className={INPUT_CLASS} required />
-        <textarea
-          name="message"
-          placeholder="Message*"
-          rows={5}
-          className={`${INPUT_CLASS} resize-y min-h-[8rem] max-w-full`}
-          required
-        />
+        <label className="block min-w-0">
+          <span className={LABEL_CLASS}>Name</span>
+          <input id="contact-name" type="text" name="name" placeholder="Name*" className={INPUT_CLASS} required autoComplete="name" />
+        </label>
+        <label className="block min-w-0">
+          <span className={LABEL_CLASS}>Email</span>
+          <input id="contact-email" type="email" name="email" placeholder="Your email*" className={INPUT_CLASS} required autoComplete="email" />
+        </label>
+        <label className="block min-w-0">
+          <span className={LABEL_CLASS}>Subject</span>
+          <input id="contact-subject" type="text" name="subject" placeholder="Subject*" className={INPUT_CLASS} required />
+        </label>
+        <label className="block min-w-0">
+          <span className={LABEL_CLASS}>Message</span>
+          <textarea
+            id="contact-message"
+            name="message"
+            placeholder="Message*"
+            rows={5}
+            className={`${INPUT_CLASS} resize-y min-h-[8rem] max-w-full`}
+            required
+          />
+        </label>
         <button
           type="submit"
           className="btn btn-primary btn-touch btn-section w-full sm:w-auto sm:self-start mt-1"

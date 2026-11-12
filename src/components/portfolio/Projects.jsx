@@ -66,7 +66,7 @@ const Projects = ({ data }) => {
       </div>
 
       <div className="flex flex-col p-5 sm:p-6">
-        <p className="text-edo-gold text-xs font-semibold uppercase tracking-wider break-words">
+        <p className="text-edo-gold-ink text-xs font-semibold uppercase tracking-wider break-words">
           {data?.category}
         </p>
         <h3 className="font-display text-xl font-semibold text-edo-charcoal pt-2 mb-3 break-words">

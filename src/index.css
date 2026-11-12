@@ -24,6 +24,7 @@ body {
   --color-edo-sage-dark: #b8c4b0;
   --color-edo-gold: #c9a227;
   --color-edo-gold-dark: #a8841f;
+  --color-edo-gold-ink: #7a5e10;
   --color-edo-charcoal: #1c1c1c;
   --color-edo-cream: #e8e4dd;
   --color-edo-stone: #f5f4f0;
@@ -55,7 +56,27 @@ body {
 }
 
 .section-eyebrow {
-  @apply text-edo-gold text-xs sm:text-sm font-semibold uppercase tracking-[0.2em] mb-3;
+  @apply text-edo-gold-ink text-xs sm:text-sm font-semibold uppercase tracking-[0.2em] mb-3;
+}
+
+.skip-link {
+  position: fixed;
+  left: 1rem;
+  top: 1rem;
+  z-index: 10000;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  background: #fff;
+  color: #1c1c1c;
+  font-weight: 600;
+  transform: translateY(-200%);
+}
+
+.skip-link:focus,
+.skip-link:focus-visible {
+  transform: translateY(0);
+  outline: 2px solid #7a5e10;
+  outline-offset: 2px;
 }
 
 .section-title {
