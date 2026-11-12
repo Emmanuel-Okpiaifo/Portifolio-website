@@ -5,7 +5,7 @@ const skillNames = profile.skills.categories.flatMap((category) => category.item
 
 describe("profile content", () => {
   it("identifies Emmanuel and the public contact details", () => {
-    expect(profile.name).toBe("Emmanuel Okpiaifo");
+    expect(profile.name).toBe("Emmanuel Daniel Okpiaifo");
     expect(profile.email).toBe("emmaokpiaifo@gmail.com");
     expect(profile.location).toBe("Lagos, Nigeria");
     expect(profile.whatsappUrl).toBe("https://wa.me/2349160852509");

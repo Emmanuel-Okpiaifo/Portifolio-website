@@ -38,7 +38,7 @@ describe("website", () => {
     expect(document.getElementById("main-content")).toBeTruthy();
 
     const hero = document.getElementById("introduction");
-    expect(await screen.findByRole("heading", { name: /Emmanuel Okpiaifo/ })).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: /Emmanuel Daniel Okpiaifo/ })).toBeInTheDocument();
     expect(within(hero).getByRole("link", { name: /Download Resume/ })).toHaveAttribute("download", "Emmanuel_Okpiaifo_Resume_Full_Stack.pdf");
     expect(within(hero).getByRole("link", { name: "LinkedIn" })).toHaveAttribute("href", "https://www.linkedin.com/in/emmanuel-okpiaifo");
     expect(within(hero).getByRole("link", { name: "GitHub" })).toHaveAttribute("href", "https://github.com/Emmanuel-Okpiaifo");

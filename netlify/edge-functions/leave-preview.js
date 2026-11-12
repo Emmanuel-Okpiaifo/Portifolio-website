@@ -2,11 +2,11 @@ const PREVIEW = `<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Leave a testimonial | Emmanuel (Daniel) Okpiaifo</title>
-    <meta name="description" content="Share what you worked on with Emmanuel (Daniel) Okpiaifo and what made a difference. Notes are reviewed before they appear on the site." />
+    <title>Leave a testimonial | Emmanuel Daniel Okpiaifo</title>
+    <meta name="description" content="Share what you worked on with Emmanuel Daniel Okpiaifo and what made a difference. Notes are reviewed before they appear on the site." />
     <link rel="canonical" href="https://emmanuel-okpiaifo.netlify.app/leave-a-testimonial" />
-    <meta property="og:title" content="Leave a testimonial | Emmanuel (Daniel) Okpiaifo" />
-    <meta property="og:description" content="Share what you worked on with Emmanuel (Daniel) Okpiaifo and what made a difference. Notes are reviewed before they appear on the site." />
+    <meta property="og:title" content="Leave a testimonial | Emmanuel Daniel Okpiaifo" />
+    <meta property="og:description" content="Share what you worked on with Emmanuel Daniel Okpiaifo and what made a difference. Notes are reviewed before they appear on the site." />
     <meta property="og:url" content="https://emmanuel-okpiaifo.netlify.app/leave-a-testimonial" />
     <meta property="og:type" content="website" />
     <meta property="og:image" content="https://emmanuel-okpiaifo.netlify.app/og-image.png" />
@@ -14,7 +14,7 @@ const PREVIEW = `<!DOCTYPE html>
     <meta name="twitter:image" content="https://emmanuel-okpiaifo.netlify.app/og-image.png" />
   </head>
   <body>
-    <p>Share what you worked on with Emmanuel (Daniel) Okpiaifo and what made a difference.</p>
+    <p>Share what you worked on with Emmanuel Daniel Okpiaifo and what made a difference.</p>
   </body>
 </html>`;
 

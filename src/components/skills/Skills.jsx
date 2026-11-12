@@ -17,7 +17,7 @@ const SkillPill = ({ item }) => {
     <span
       className={`${shared} inline-flex w-fit flex-col items-start rounded-2xl @[20rem]:flex-row @[20rem]:items-center @[20rem]:rounded-full`}
     >
-      <span>{lead} / </span>
+      <span className="whitespace-pre">{lead} / </span>
       <span>{rest}</span>
     </span>
   );

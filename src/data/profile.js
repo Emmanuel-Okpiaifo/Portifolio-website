@@ -4,12 +4,12 @@
  */
 
 export const profile = {
-  name: "Emmanuel Okpiaifo",
+  name: "Emmanuel Daniel Okpiaifo",
   shortName: "EDO",
   brand: {
     monogram: "EDO",
-    title: "Emmanuel Okpiaifo",
-    displayName: "Emmanuel Okpiaifo",
+    title: "Emmanuel Daniel Okpiaifo",
+    displayName: "Emmanuel Daniel Okpiaifo",
   },
   tagline: "Full Stack Developer (React, PostgreSQL & WordPress) | Web Platform & Digital Product Builder",
   email: "emmaokpiaifo@gmail.com",
@@ -22,7 +22,7 @@ export const profile = {
 
   intro: {
     greeting: "Hello, I'm",
-    headline: "Emmanuel Okpiaifo",
+    headline: "Emmanuel Daniel Okpiaifo",
     bio: "I'm a Full Stack Developer in Lagos with 2+ years building production React applications, PostgreSQL-backed services, and WordPress platforms. At NerdzFactory I shipped BizGrowth Africa end to end, and I build for programmes with Google DeepMind, Meta, Mastercard Foundation, and others.",
     bioHighlightTerms: ["Full Stack Developer", "BizGrowth Africa"],
     ctaEmail: "emmaokpiaifo@gmail.com",

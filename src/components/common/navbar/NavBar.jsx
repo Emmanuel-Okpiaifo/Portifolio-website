@@ -104,7 +104,7 @@ const NavBar = () => {
         >
           <Logo badge glow className="h-9 w-9 xs:h-10 xs:w-10 sm:h-11 sm:w-11 shrink-0" />
           <span className="flex flex-col min-w-0 leading-tight">
-            <span className="font-display text-sm xs:text-base sm:text-lg font-bold text-edo-gold tracking-wide">
+            <span className={`font-display text-sm xs:text-base sm:text-lg font-bold tracking-wide ${solidBar ? "text-edo-gold-ink" : "text-edo-gold"}`}>
               {profile.brand.monogram}
             </span>
             <span className="hidden lg:block max-w-[9rem] text-[11px] font-semibold leading-tight text-edo-charcoal">
