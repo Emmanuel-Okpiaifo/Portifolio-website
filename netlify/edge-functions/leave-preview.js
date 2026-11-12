@@ -9,9 +9,9 @@ const PREVIEW = `<!DOCTYPE html>
     <meta property="og:description" content="Share what you worked on with Emmanuel Daniel Okpiaifo and what made a difference. Notes are reviewed before they appear on the site." />
     <meta property="og:url" content="https://emmanuel-okpiaifo.netlify.app/leave-a-testimonial" />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://emmanuel-okpiaifo.netlify.app/og-image.png" />
+    <meta property="og:image" content="https://emmanuel-okpiaifo.netlify.app/og-image.png?v=2" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:image" content="https://emmanuel-okpiaifo.netlify.app/og-image.png" />
+    <meta name="twitter:image" content="https://emmanuel-okpiaifo.netlify.app/og-image.png?v=2" />
   </head>
   <body>
     <p>Share what you worked on with Emmanuel Daniel Okpiaifo and what made a difference.</p>
