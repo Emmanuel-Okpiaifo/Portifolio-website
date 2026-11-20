@@ -23,13 +23,13 @@ export const profile = {
   intro: {
     greeting: "Hello, I'm",
     headline: "Emmanuel Daniel Okpiaifo",
-    bio: "I'm a Full Stack Developer in Lagos with 2+ years building production React applications, PostgreSQL-backed services, and WordPress platforms. At NerdzFactory I shipped BizGrowth Africa end to end, and I build for programmes with Google DeepMind, Meta, Mastercard Foundation, and others.",
+    bio: "I'm a Full Stack Developer in Lagos with 3+ years building production React applications, PostgreSQL-backed services, and WordPress platforms. At NerdzFactory I shipped BizGrowth Africa end to end, and I build for programmes with Google DeepMind, Meta, Mastercard Foundation, and others.",
     bioHighlightTerms: ["Full Stack Developer", "BizGrowth Africa"],
     ctaEmail: "emmaokpiaifo@gmail.com",
   },
 
   stats: [
-    { id: 1, title: "Experience", description: "2+ years" },
+    { id: 1, title: "Experience", description: "3+ years" },
     { id: 2, title: "Key Projects", description: "9" },
     { id: 3, title: "Partners", description: "12" },
   ],
@@ -38,7 +38,7 @@ export const profile = {
     headline: "Full Stack Developer (React, PostgreSQL & WordPress)",
     roles: "Technology Associate at NerdzFactory Company, Lagos",
     paragraphs: [
-      "Full Stack Developer with 2+ years building production React applications, PostgreSQL-backed services, and enterprise WordPress ecosystems for organisations partnered with Google DeepMind, Meta, Raspberry Pi Foundation, GIZ, UNDP, LSETF, and Mastercard Foundation.",
+      "Full Stack Developer with 3+ years building production React applications, PostgreSQL-backed services, and enterprise WordPress ecosystems for organisations partnered with Google DeepMind, Meta, Raspberry Pi Foundation, GIZ, UNDP, LSETF, and Mastercard Foundation.",
       "Shipped a full SME growth platform end to end: React frontend, CMS, Flutterwave payments, and an AI chatbot, currently supporting 20+ daily content uploads and 98%+ platform uptime, alongside an LMS, multiple campaign platforms, and workflow automations (Google Sheets, Zoho). Comfortable owning a build from architecture through deployment and post-launch optimization.",
     ],
   },
@@ -94,7 +94,7 @@ export const profile = {
       {
         id: 1,
         title: "Languages & Frameworks",
-        items: ["JavaScript (ES6+)", "React.js", "Next.js", "HTML5", "CSS3", "Bootstrap", "jQuery"],
+        items: ["JavaScript (ES6+)", "React.js", "Next.js", "HTML5", "CSS3", "Tailwind CSS", "Bootstrap", "jQuery"],
       },
       {
         id: 2,
@@ -275,7 +275,7 @@ export const profile = {
       {
         id: 1,
         imageKey: "bizgrowthAfrica",
-        category: "React · Dec 2025 – Present",
+        category: "React · Tailwind CSS · Dec 2025 – Present",
         title: "BizGrowth Africa",
         built: "An end-to-end production React platform connecting African SMEs to opportunities, resources and digital tools, with a CMS (admin.bizgrowthafrica.com), Flutterwave payments, the Scaleup Grant page, a Phase 1 AI chatbot and a GA-tracked News site.",
         result: "A central digital hub for SME growth initiatives, supporting 20+ daily content uploads and fully editor-managed after launch.",
